@@ -1,0 +1,117 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace ="fragments/header::head"></head>
+<body class="d-flex flex-column min-vh-100">
+
+    <div th:replace ="fragments/header::head-navbar"></div>
+
+
+    <div class="container-fluid">
+        <h1 class="top-name center-block text-center">Принтеры</h1>
+        <div class="table-responsive">
+            <table class="table table-bordered ">
+                <thead>
+                <tr class = "text-center">
+                    <th>
+                        Принтер
+                    </th>
+                    <th>
+                        Картриджи
+                    </th>
+                    <th>
+                        В отделе
+                    </th>
+                    <th>
+                        На заправке
+                    </th>
+                    <th>
+                        У пользователей
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class = "text-center">
+                    <td class="align-middle">
+                        HP LaserJet 1020
+                    </td>
+                    <td class="align-middle">
+                        <a class="align-middle" asp-area="" href="/info">12А</a>
+                    </td>
+                    <td class="align-middle">
+                        1
+                    </td>
+                    <td class="align-middle">
+                        2
+                    </td>
+                    <td class="align-middle">
+                        45
+                    </td>
+                </tr>
+                <tr class = "text-center">
+                    <td class="align-middle">
+                        HP LaserJet Pro M428fdn
+                    </td>
+                    <td class="align-middle">
+                        <a class="align-middle" asp-area="" href="/info">53X</a>
+                    </td>
+                    <td class="align-middle">
+                        0
+                    </td>
+                    <td class="align-middle">
+                        5
+                    </td>
+                    <td class="align-middle">
+                        15
+                    </td>
+                </tr>
+                <tr class = "text-center">
+                    <td class="align-middle">
+                        Kyocera ECOSYS M2040dn
+                    </td>
+                    <td class="align-middle">
+                        <a class="align-middle" asp-area="" href="/info">ТК-1170</a>
+                    </td>
+                    <td class="align-middle">
+                        6
+                    </td>
+                    <td class="align-middle">
+                        1
+                    </td>
+                    <td class="align-middle">
+                        7
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!--<div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <h1 class="top-name center-block text-center">Резюме</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <p>Привет! My name is Daniel и я учусь в Astrakhan State University. Нечего писать в резюме, поэтому можете просто посмотреть какой-то список</p>
+            </div>
+        </div>
+        <div class="row">
+            <a class="btn btn-block btn-social btn-twitter">
+                <span class="fab"></span> Sign in with Twitter
+            </a>
+        </div>
+    </div>
+
+
+
+    <a class="btn btn-social-icon btn-twitter">
+        <span class="fa fa-twitter"></span>
+    </a>-->
+
+    <footer th:replace ="fragments/footer::foot-privacy"></footer>
+    <div th:replace ="fragments/footer::foot"></div>
+
+</body>
+</html>

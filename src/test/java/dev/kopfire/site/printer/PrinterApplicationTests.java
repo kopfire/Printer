@@ -1,4 +1,4 @@
-package org.mysite.printer;
+package dev.kopfire.site.printer;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

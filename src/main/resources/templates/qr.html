@@ -1,0 +1,119 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace ="fragments/header::head"></head>
+<body class="d-flex flex-column min-vh-100">
+
+<div th:replace ="fragments/header::head-navbar"></div>
+<div class="container">
+    <h1>Отсканируйте QR код.</h1>
+    <form method="POST" enctype="multipart/form-data" action="/uploadQrCode">
+        <div class="form-group">
+            <input type="file" class="form-control-file" id="qrCodeFile" name="qrCodeFile" capture="environment" accept="image/*">
+        </div>
+        <button hidden type="submit" class="btn btn-primary">Загрузить</button>
+    </form>
+    <p class="text-danger" th:if="${errorMessage}" th:text="${errorMessage}"></p>
+    <div class="table-responsive"  th:if="${cartridge}">
+        <table class="table table-bordered ">
+            <thead>
+            <tr class = "text-center">
+                <th>
+                    QR
+                </th>
+                <th>
+                    Модель
+                </th>
+                <th>
+                    Статус
+                </th>
+                <th th:if="${place}" th:text="${place}">
+                    Комментарий
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class = "text-center">
+                <td class="align-middle">
+                    <p class="text" th:text="${qrContent}"></p>
+                </td>
+                <td class="align-middle">
+                    <p class="text" th:text="${model}"></p>
+                </td>
+                <td class="align-middle">
+                    <p class="text" th:text="${status}"></p>
+                </td>
+                <td class="align-middle" th:if="${place}" th:text="${place}">
+                    <p class="text" th:if="${place}" th:text="${place}"></p>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="table-responsive"  th:if="${new_cartridge}">
+        <table class="table table-bordered ">
+            <thead>
+            <tr class = "text-center">
+                <th>
+                    QR
+                </th>
+                <th>
+                    Модель
+                </th>
+                <th>
+                    Статус
+                </th>
+                <th>
+                    Комментарий
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class = "text-center">
+                <td class="align-middle">
+                    <p class="text" th:text="${qrContent}"></p>
+                </td>
+                <td class="align-middle">
+                    <div class="mb-3">
+                        <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Укажите модель картриджа">
+                    </div>
+                </td>
+                <td class="align-middle">
+                    <div class="mb-3">
+                        <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Укажите статус">
+                        <datalist id="datalistOptions">
+                            <option value="В отделе">
+                            <option value="На заправке">
+                            <option value="У пользователей">
+                        </datalist>
+                    </div>
+                </td>
+                <td class="align-middle">
+                    <div class="mb-3">
+                        <input type="email" class="form-control" id="exampleFormControlInput3" placeholder="Комментарий (кабинет)">
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <button type="button" class="btn btn-primary">Добавить в базу данных</button>
+    </div>
+
+
+</div>
+<footer th:replace ="fragments/footer::foot-privacy"></footer>
+
+<div th:replace ="fragments/footer::foot"></div>
+
+<script>
+    $(document).ready(function(){
+        $("#qrCodeFile").change(function(){
+            document.querySelector('.btn').click()
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

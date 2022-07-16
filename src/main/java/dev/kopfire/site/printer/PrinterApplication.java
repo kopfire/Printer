@@ -1,4 +1,4 @@
-package org.mysite.printer;
+package dev.kopfire.site.printer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,5 +9,10 @@ public class PrinterApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PrinterApplication.class, args);
 	}
+
+	/*@Bean
+	public BCryptPasswordEncoder bCryptPasswordEncoder() {
+		return new BCryptPasswordEncoder();
+	}*/
 
 }

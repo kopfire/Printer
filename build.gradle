@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.7.1'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id "org.flywaydb.flyway" version "7.9.2"
 }
 
 group = 'org.mysite'
@@ -14,11 +15,34 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-security:2.7.1'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.webjars.bower:jquery:3.6.0'
+	implementation 'org.webjars:bootstrap:5.1.3'
+	implementation 'ma.glasnost.orika:orika-core:1.5.4'
+	implementation 'org.webjars.bower:bootstrap-social:5.1.1'
+	implementation 'org.webjars.npm:bootstrap-icons:1.8.3'
+	implementation 'com.google.zxing:core:3.5.0'
+	implementation 'com.google.zxing:javase:3.5.0'
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5:3.1.0.M1'
+	compileOnly 'org.projectlombok:lombok:1.18.24'
+	annotationProcessor 'org.projectlombok:lombok:1.18.24'
 	runtimeOnly 'org.postgresql:postgresql'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+flyway{
+	url = 'jdbc:postgresql://localhost:5432/postgres'
+	user = 'sa'
+	password = ''
+	schemas = ['public']
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+
