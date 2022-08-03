@@ -5,13 +5,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class ModelCartridgeService {
 
-    public String getName(int type){
+    public String getName(int type) {
         if (type == 1)
             return "12A";
         return "";
     }
 
-    public String getPlace(int type){
+    public String getPlace(int type) {
         if (type == 1)
             return "В отделе";
         if (type == 2)

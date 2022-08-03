@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class PrinterController {
 
     @GetMapping("/printer")
-    public String show() {
+    public String printerPage() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         PersonDTO personDetails = (PersonDTO)authentication.getPrincipal();
         return "printer";

@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface PersonRepository extends JpaRepository<dev.kopfire.site.printer.db.entity.Person, Integer> {
+public interface PersonRepository extends JpaRepository<Person, Integer> {
     Optional<Person> findByUsername(String username);
 }

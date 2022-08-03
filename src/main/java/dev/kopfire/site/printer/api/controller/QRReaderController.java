@@ -31,7 +31,7 @@ public class QRReaderController {
     private ModelCartridgeService modelCartridgeService;
 
     @GetMapping("/qr")
-    public String show() {
+    public String readerPage() {
         return "qr";
     }
 

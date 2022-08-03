@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Зарегистрируйтесь</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/static/css/auth.css" th:href="@{/css/auth.css}" />
+</head>
+<body>
+
+<div th:replace ="fragments/header::head-navbar"></div>
+
+<div class="container">
+    <form class="form-signin" th:method="post" th:action="@{/auth/registration}" th:object="${person}">
+        <h2 class="form-signin-heading">Регистрация</h2>
+        <p>
+            <label for="username" class="sr-only">Введите логин</label>
+            <input type="text" th:field="*{username}" id="username" name="username" class="form-control" placeholder="Логин"  required="">
+            <div style="color:red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</div>
+        </p>
+        <p>
+            <label for="password" class="sr-only">Введите пароль</label>
+            <input type="password" th:field="*{password}" id="password" name="password" class="form-control" placeholder="Пароль" required="">
+            <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password Error</div>
+        </p>
+        <p>
+            <label for="password" class="sr-only">Повторите пароль</label>
+            <input type="password" th:field="*{passwordTwo}" id="password_two" name="password_two" class="form-control" placeholder="Повторите пароль" required="">
+        </p>
+        <input name="_csrf" type="hidden" value="f35d65c0-5ad0-4272-8b79-3194714b46b5">
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Создать аккаунт</button>
+        <p class="card-text bg-light" style="transform: rotate(0);">
+            Уже есть аккаунт?<a class="link-primary" asp-area="" href="/auth/login"> Войди!</a>
+        </p>
+    </form>
+</div>
+</body>
+<footer th:replace ="fragments/footer::foot-privacy"></footer>
+</html>

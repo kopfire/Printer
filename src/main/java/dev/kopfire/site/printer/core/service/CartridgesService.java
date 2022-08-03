@@ -18,7 +18,7 @@ public class CartridgesService {
     @Autowired
     private CartridgesMapper cartridgesMapper;
 
-    public CartridgeDTO addCartidge(CartridgeDTO cartridge){
+    public CartridgeDTO addCartidge(CartridgeDTO cartridge) {
 
         Cartridge cartridgesNew = cartridgesMapper.map(cartridge, Cartridge.class);
         cartridgesNew = cartridgesRepository.save(cartridgesNew);
@@ -26,7 +26,7 @@ public class CartridgesService {
         return cartridge;
     }
 
-    public CartridgeDTO getCartidge(String text_qr){
+    public CartridgeDTO getCartidge(String text_qr) {
         List<Cartridge> cartridgeList = cartridgesRepository.findByQR(text_qr);
         if (cartridgeList.size() == 0)
             return null;

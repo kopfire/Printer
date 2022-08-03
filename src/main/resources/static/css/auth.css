@@ -1,0 +1,10 @@
+body {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    background-color: #eee;
+}
+
+.bg-light {
+    background-color: #eee!important;
+}
+
