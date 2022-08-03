@@ -38,7 +38,9 @@
                         </li>
                         <li class="nav-item me-auto">
                             <div sec:authorize="isAuthenticated()">
-                                <a class="nav-link text-dark" asp-area="" href="/logout">Выйти</a>
+                                <form th:action="@{/logout}" th:method="POST">
+                                    <button class="btn btn-light" type="submit">Выйти</button>
+                                </form>
                             </div>
                         </li>
                     </ul>
