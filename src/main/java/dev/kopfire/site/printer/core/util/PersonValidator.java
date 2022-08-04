@@ -1,6 +1,5 @@
 package dev.kopfire.site.printer.core.util;
 
-import dev.kopfire.site.printer.core.mapper.PersonMapper;
 import dev.kopfire.site.printer.core.model.PersonDTO;
 import dev.kopfire.site.printer.core.service.PersonDetailsService;
 import dev.kopfire.site.printer.db.entity.Person;

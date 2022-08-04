@@ -4,11 +4,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.Collection;
+import java.util.Collections;
 
 @Getter
 @Setter
@@ -25,12 +28,17 @@ public class PersonDTO implements UserDetails {
     @Size(min = 6, max = 100, message = "Пароль должен быть от 6 до 100 символов")
     private String password;
 
-    @NotEmpty(message = "Пароль не должен быть пустым")
+    private String role;
+
     private String passwordTwo;
+
+    @Pattern(regexp = "kopfire",
+            message = "Код регистрации неверный")
+    private String code;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return Collections.singletonList(new SimpleGrantedAuthority(getRole()));
     }
 
     @Override

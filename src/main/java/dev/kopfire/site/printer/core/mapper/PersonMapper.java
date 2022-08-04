@@ -1,8 +1,6 @@
 package dev.kopfire.site.printer.core.mapper;
 
-import dev.kopfire.site.printer.core.model.CartridgeDTO;
 import dev.kopfire.site.printer.core.model.PersonDTO;
-import dev.kopfire.site.printer.db.entity.Cartridge;
 import dev.kopfire.site.printer.db.entity.Person;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.ConfigurableMapper;

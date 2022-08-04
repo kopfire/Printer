@@ -38,14 +38,14 @@ public class QRReaderController {
     @PostMapping("/uploadQrCode")
     public String uploadQrCode(@RequestParam("qrCodeFile") MultipartFile qrCodeFile, RedirectAttributes redirectAttributes) {
 
-        if(qrCodeFile.isEmpty()) {
+        if (qrCodeFile.isEmpty()) {
             redirectAttributes.addFlashAttribute("errorMessage", "Файл не выбран.");
             return "redirect:/qr";
         }
         try {
             String qrContent = qrCodeService.decodeQR(qrCodeFile.getBytes());
 
-            if (qrContent == null){
+            if (qrContent == null) {
                 redirectAttributes.addFlashAttribute("errorMessage", "Файл не содержит QR кода.");
                 return "redirect:/qr";
             }
@@ -57,7 +57,7 @@ public class QRReaderController {
 
             CartridgeDTO cartridgeDTO = cartridgesService.getCartidge(qrContent);
 
-            if (cartridgeDTO != null){
+            if (cartridgeDTO != null) {
                 redirectAttributes.addFlashAttribute("cartridge", qrContent);
                 redirectAttributes.addFlashAttribute("qrContent", qrContent);
                 redirectAttributes.addFlashAttribute("model", modelCartridgeService.getName(cartridgeDTO.getType_cartridge()));

@@ -27,8 +27,13 @@
             <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password Error</div>
         </p>
         <p>
-            <label for="password" class="sr-only">Повторите пароль</label>
+            <label for="password_two" class="sr-only">Повторите пароль</label>
             <input type="password" th:field="*{passwordTwo}" id="password_two" name="password_two" class="form-control" placeholder="Повторите пароль" required="">
+        </p>
+        <p>
+            <label for="code" class="sr-only">Введите код регистрации</label>
+            <input type="text" th:field="*{code}" id="code" name="code" class="form-control" placeholder="Введите код регистрации" required="">
+            <div style="color:red" th:if="${#fields.hasErrors('code')}" th:errors="*{code}">code Error</div>
         </p>
         <input name="_csrf" type="hidden" value="f35d65c0-5ad0-4272-8b79-3194714b46b5">
         <button class="btn btn-lg btn-primary btn-block" type="submit">Создать аккаунт</button>
