@@ -18,7 +18,7 @@ import java.io.IOException;
 @Service
 public class QRCodeServiceImpl implements QRCodeService {
 
-    private Logger logger = LoggerFactory.getLogger(QRCodeServiceImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(QRCodeServiceImpl.class);
 
     @Override
     public String decodeQR(byte[] qrCodeBytes) {
@@ -31,9 +31,7 @@ public class QRCodeServiceImpl implements QRCodeService {
             MultiFormatReader multiFormatReader = new MultiFormatReader();
             Result result = multiFormatReader.decode(binaryBitmap);
             return result.getText();
-        } catch (NotFoundException e) {
-            logger.error(e.getMessage(), e);
-        } catch (IOException e) {
+        } catch (NotFoundException | IOException e) {
             logger.error(e.getMessage(), e);
         }
         return null;

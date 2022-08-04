@@ -10,9 +10,4 @@ public class PrinterApplication {
 		SpringApplication.run(PrinterApplication.class, args);
 	}
 
-	/*@Bean
-	public BCryptPasswordEncoder bCryptPasswordEncoder() {
-		return new BCryptPasswordEncoder();
-	}*/
-
 }

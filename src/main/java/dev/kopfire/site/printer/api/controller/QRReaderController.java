@@ -6,7 +6,6 @@ import dev.kopfire.site.printer.core.service.ModelCartridgeService;
 import dev.kopfire.site.printer.core.service.QRCodeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,16 +18,19 @@ import java.io.IOException;
 @Controller
 public class QRReaderController {
 
-    private Logger logger = LoggerFactory.getLogger(QRReaderController.class);
+    private final Logger logger = LoggerFactory.getLogger(QRReaderController.class);
 
-    @Autowired
-    private QRCodeService qrCodeService;
+    private final QRCodeService qrCodeService;
 
-    @Autowired
-    private CartridgesService cartridgesService;
+    private final CartridgesService cartridgesService;
 
-    @Autowired
-    private ModelCartridgeService modelCartridgeService;
+    private final ModelCartridgeService modelCartridgeService;
+
+    public QRReaderController(QRCodeService qrCodeService, CartridgesService cartridgesService, ModelCartridgeService modelCartridgeService) {
+        this.qrCodeService = qrCodeService;
+        this.cartridgesService = cartridgesService;
+        this.modelCartridgeService = modelCartridgeService;
+    }
 
     @GetMapping("/qr")
     public String readerPage() {
@@ -55,7 +57,7 @@ public class QRReaderController {
                 return "redirect:/qr";
             }
 
-            CartridgeDTO cartridgeDTO = cartridgesService.getCartidge(qrContent);
+            CartridgeDTO cartridgeDTO = cartridgesService.getCartridge(qrContent);
 
             if (cartridgeDTO != null) {
                 redirectAttributes.addFlashAttribute("cartridge", qrContent);

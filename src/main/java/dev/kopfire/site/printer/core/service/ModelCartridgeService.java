@@ -10,14 +10,4 @@ public class ModelCartridgeService {
             return "12A";
         return "";
     }
-
-    public String getPlace(int type) {
-        if (type == 1)
-            return "В отделе";
-        if (type == 2)
-            return "На заправке";
-        if (type == 3)
-            return "У пользователей";
-        return "";
-    }
 }

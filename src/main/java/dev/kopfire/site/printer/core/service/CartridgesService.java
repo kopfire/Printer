@@ -4,7 +4,6 @@ import dev.kopfire.site.printer.core.mapper.CartridgesMapper;
 import dev.kopfire.site.printer.core.model.CartridgeDTO;
 import dev.kopfire.site.printer.db.entity.Cartridge;
 import dev.kopfire.site.printer.db.repository.CartridgesRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,13 +11,16 @@ import java.util.List;
 @Service
 public class CartridgesService {
 
-    @Autowired
-    private CartridgesRepository cartridgesRepository;
+    private final CartridgesRepository cartridgesRepository;
 
-    @Autowired
-    private CartridgesMapper cartridgesMapper;
+    private final CartridgesMapper cartridgesMapper;
 
-    public CartridgeDTO addCartidge(CartridgeDTO cartridge) {
+    public CartridgesService(CartridgesRepository cartridgesRepository, CartridgesMapper cartridgesMapper) {
+        this.cartridgesRepository = cartridgesRepository;
+        this.cartridgesMapper = cartridgesMapper;
+    }
+
+    public CartridgeDTO addCartridge(CartridgeDTO cartridge) {
 
         Cartridge cartridgesNew = cartridgesMapper.map(cartridge, Cartridge.class);
         cartridgesNew = cartridgesRepository.save(cartridgesNew);
@@ -26,7 +28,7 @@ public class CartridgesService {
         return cartridge;
     }
 
-    public CartridgeDTO getCartidge(String text_qr) {
+    public CartridgeDTO getCartridge(String text_qr) {
         List<Cartridge> cartridgeList = cartridgesRepository.findByQR(text_qr);
         if (cartridgeList.size() == 0)
             return null;

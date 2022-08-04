@@ -4,7 +4,6 @@ import dev.kopfire.site.printer.core.mapper.PersonMapper;
 import dev.kopfire.site.printer.core.model.PersonDTO;
 import dev.kopfire.site.printer.db.entity.Person;
 import dev.kopfire.site.printer.db.repository.PersonRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,11 +14,14 @@ import java.util.Optional;
 @Service
 public class PersonDetailsService implements UserDetailsService {
 
-    @Autowired
-    private PersonRepository personRepository;
+    private final PersonRepository personRepository;
 
-    @Autowired
-    private PersonMapper personMapper;
+    private final PersonMapper personMapper;
+
+    public PersonDetailsService(PersonRepository personRepository, PersonMapper personMapper) {
+        this.personRepository = personRepository;
+        this.personMapper = personMapper;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
