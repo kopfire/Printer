@@ -1,6 +1,6 @@
 package dev.kopfire.site.printer.core.config;
 
-import lombok.RequiredArgsConstructor;
+/*import lombok.RequiredArgsConstructor;*/
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,7 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@RequiredArgsConstructor
+/*@RequiredArgsConstructor*/
 public class SecurityConfig {
 
     @Bean
@@ -38,9 +38,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.authorizeHttpRequests()
-                .antMatchers("/admin")
-                .hasRole("ADMIN")
-                .antMatchers("/auth/login", "/printer", "/auth/registration", "error", "/").permitAll()
+                .antMatchers("/admin").hasRole("ADMIN")
+                .antMatchers("/auth/login", "/printers", "/cartridges", "/auth/registration", "/error", "/uploadQrCode", "/").permitAll()
                 .anyRequest().hasAnyRole("USER", "ADMIN")
                 .and()
                 .formLogin().loginPage("/auth/login")
@@ -48,10 +47,15 @@ public class SecurityConfig {
                 .defaultSuccessUrl("/", true)
                 .failureUrl("/auth/login?error")
                 .and()
-                .logout().logoutUrl("/logout").logoutSuccessUrl("/auth/login");
+                .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/auth/login");
 
         http.headers().frameOptions().sameOrigin();
 
         return http.build();
+    }
+
+    public SecurityConfig() {
     }
 }

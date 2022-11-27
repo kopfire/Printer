@@ -1,10 +1,10 @@
-create table public.names_cartridges
+create table public.types_cartridges
 (
     id             Serial primary key not null,
     name           VARCHAR
 );
 
-create unique index names_cartridges_id_uindex ON public.names_cartridges(id);
+create unique index types_cartridges_id_uindex ON public.types_cartridges(id);
 
 create table public.cartridges
 (
@@ -13,7 +13,7 @@ create table public.cartridges
     text_qr        VARCHAR,
     status         VARCHAR,
     text_status    TEXT,
-    CONSTRAINT  cartridges_type_cartridge_fk foreign key (type_cartridge) REFERENCES names_cartridges(id)
+    CONSTRAINT  cartridges_type_cartridge_fk foreign key (type_cartridge) REFERENCES types_cartridges(id)
 );
 
 create unique index cartridges_id_uindex ON public.cartridges(id);

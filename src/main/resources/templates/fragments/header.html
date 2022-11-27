@@ -17,10 +17,21 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav  mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" href="/printer">Принтеры</a>
+                            <a class="nav-link text-dark" href="/printers">Принтеры</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/cartridges">Картриджи</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/types_cartridges">Типы картриджей</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" href="/qr">Сканер</a>
+                        </li>
+                        <li class="nav-item">
+                            <div sec:authorize="hasRole('ROLE_ADMIN')">
+                                <a class="nav-link text-dark" href="/admin">Админка</a>
+                            </div>
                         </li>
                     </ul>
                 </div>

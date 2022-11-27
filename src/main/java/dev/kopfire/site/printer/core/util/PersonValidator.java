@@ -29,11 +29,7 @@ public class PersonValidator implements Validator {
         if (!person.getPassword().equals(person.getPasswordTwo()))
             errors.rejectValue("password", "", "Пароли не совпадают");
 
-
         if (!personDetailsService.checkUserByUsername(person.getUsername()))
             errors.rejectValue("username", "", "Человек с таким именем пользователя существует");
-
-
-
     }
 }

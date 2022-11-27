@@ -10,8 +10,8 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "cartridges")
-public class Cartridge {
+@Table(name = "types_cartridges")
+public class TypesCartridges {
 
     @Id
     @Column
@@ -19,14 +19,5 @@ public class Cartridge {
     private Long id;
 
     @Column
-    private Long type_cartridge;
-
-    @Column
-    private String text_qr;
-
-    @Column
-    private String status;
-
-    @Column
-    private String text_status;
+    private String name;
 }

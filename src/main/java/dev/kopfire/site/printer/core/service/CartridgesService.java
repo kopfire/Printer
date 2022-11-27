@@ -28,6 +28,17 @@ public class CartridgesService {
         return cartridge;
     }
 
+    public void changeCartridge(CartridgeDTO cartridge) {
+        List<Cartridge> cartridgeList = cartridgesRepository.findByQR(cartridge.getText_qr());
+
+        Cartridge cartridgesNew = cartridgeList.get(0);
+
+        cartridgesNew.setStatus(cartridge.getStatus());
+        cartridgesNew.setText_status(cartridge.getText_status());
+
+        cartridgesRepository.save(cartridgesNew);
+    }
+
     public CartridgeDTO getCartridge(String text_qr) {
         List<Cartridge> cartridgeList = cartridgesRepository.findByQR(text_qr);
         if (cartridgeList.size() == 0)

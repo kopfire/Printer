@@ -1,110 +1,130 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace ="fragments/header::head"></head>
+<link rel="stylesheet" type="text/css" href="/static/css/cartridges.css" th:href="@{/css/cartridges.css}" />
 <body class="d-flex flex-column min-vh-100">
 
 <div th:replace ="fragments/header::head-navbar"></div>
 <div class="container">
     <h1>Отсканируйте QR код.</h1>
     <form method="POST" enctype="multipart/form-data" action="/uploadQrCode">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
         <div class="form-group">
             <input type="file" class="form-control-file" id="qrCodeFile" name="qrCodeFile" capture="environment" accept="image/*">
         </div>
-        <button hidden type="submit" class="btn btn-primary">Загрузить</button>
+        <button   type="submit" class="btn btn-primary">Загрузить</button>
     </form>
     <p class="text-danger" th:if="${errorMessage}" th:text="${errorMessage}"></p>
-    <div class="table-responsive"  th:if="${cartridge}">
-        <table class="table table-bordered ">
-            <thead>
-            <tr class = "text-center">
-                <th>
-                    QR
-                </th>
-                <th>
-                    Модель
-                </th>
-                <th>
-                    Статус
-                </th>
-                <th th:if="${place}" th:text="${place}">
-                    Комментарий
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr class = "text-center">
-                <td class="align-middle">
-                    <p class="text" th:text="${qrContent}"></p>
-                </td>
-                <td class="align-middle">
-                    <p class="text" th:text="${model}"></p>
-                </td>
-                <td class="align-middle">
-                    <p class="text" th:text="${status}"></p>
-                </td>
-                <td class="align-middle" th:if="${place}" th:text="${place}">
-                    <p class="text" th:if="${place}" th:text="${place}"></p>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
 
-    <div class="table-responsive"  th:if="${new_cartridge}">
-        <table class="table table-bordered ">
-            <thead>
-            <tr class = "text-center">
-                <th>
-                    QR
-                </th>
-                <th>
-                    Модель
-                </th>
-                <th>
-                    Статус
-                </th>
-                <th>
-                    Комментарий
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr class = "text-center">
-                <td class="align-middle">
-                    <p class="text" th:text="${qrContent}"></p>
-                </td>
-                <td class="align-middle">
-                    <div class="mb-3">
-                        <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Укажите модель картриджа">
-                    </div>
-                </td>
-                <td class="align-middle">
-                    <div class="mb-3">
-                        <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Укажите статус">
-                        <datalist id="datalistOptions">
-                            <option value="В отделе">
-                            <option value="На заправке">
-                            <option value="У пользователей">
-                        </datalist>
-                    </div>
-                </td>
-                <td class="align-middle">
-                    <div class="mb-3">
-                        <input type="email" class="form-control" id="exampleFormControlInput3" placeholder="Комментарий (кабинет)">
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <button type="button" class="btn btn-primary">Добавить в базу данных</button>
-    </div>
+    <form method="POST" enctype="multipart/form-data" action="/changeCartridge">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <div class="table-responsive"  th:if="${name}">
+            <table class="table table-bordered ">
+                <thead>
+                <tr class = "text-center">
+                    <th>
+                        QR
+                    </th>
+                    <th>
+                        Модель
+                    </th>
+                    <th>
+                        Статус
+                    </th>
+                    <th>
+                        Комментарий
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class = "text-center">
+                    <td class="align-middle">
+                        <p class="text" th:text="${name}"></p>
+                        <input type="hidden" th:value="${name}" id="name_change" name="name_change"/>
+                    </td>
+                    <td class="align-middle">
+                        <p class="text" th:text="${model}"></p>
+                    </td>
+                    <td class="align-middle">
+                        <select class="align-middle"  aria-label=".form-select-lg example" id="status_change" name="status_change">
+                            <option th:if="${#strings.contains(status, 'В отделе')}" value="В отделе" selected>В отделе</option>
+                            <option th:unless="${#strings.contains(status, 'В отделе')}" value="В отделе" >В отделе</option>
 
+                            <option th:if="${#strings.contains(status, 'На заправке')}" value="На заправке" selected>На заправке</option>
+                            <option th:unless="${#strings.contains(status, 'На заправке')}" value="На заправке" >На заправке</option>
+
+                            <option th:if="${#strings.contains(status, 'У пользователей')}" value="У пользователей" selected>У пользователей</option>
+                            <option th:unless="${#strings.contains(status, 'У пользователей')}" value="У пользователей" >У пользователей</option>
+                        </select>
+                    </td>
+                    <td class="align-middle">
+                        <input type="text" class="form-control" id="comment_change" name="comment_change" placeholder="Комментарий (кабинет)" th:value="${comment}">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <button   type="submit" class="btn btn-primary"  th:if="${name}">Изменить</button>
+    </form>
+
+    <form method="POST" enctype="multipart/form-data" action="/addCartridge">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <div class="table-responsive"  th:if="${new_cartridge}">
+            <table class="table table-bordered ">
+                <thead>
+                <tr class = "text-center">
+                    <th>
+                        QR
+                    </th>
+                    <th>
+                        Модель
+                    </th>
+                    <th>
+                        Статус
+                    </th>
+                    <th>
+                        Комментарий
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class = "text-center">
+                    <td class="align-middle">
+                        <p class="text"  th:text="${qrContent}"></p>
+                        <input hidden type="text" class="form-control" id="name" name="name" th:value="${qrContent}">
+                    </td>
+                    <td class="align-middle">
+                        <select class="align-middle"  aria-label=".form-select-lg example" id="model" name="model">
+                            <th:block th:each="typesCartridgesData : ${typesCartridgesData}">
+                                <option th:value="${typesCartridgesData.getId()}" th:label="${typesCartridgesData.getName()}"></option>
+                            </th:block>
+                        </select>
+                    </td>
+                    <td class="align-middle">
+                        <select class="align-middle"  aria-label=".form-select-lg example" id="status" name="status">
+                            <option value="В отделе">В отделе</option>
+                            <option value="На заправке">На заправке</option>
+                            <option value="У пользователей">У пользователей</option>
+                        </select>
+                    </td>
+                    <td class="align-middle">
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="comment" name="comment" placeholder="Комментарий (кабинет)">
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <button type="submit" class="btn btn-primary" th:if="${new_cartridge}">Добавить в базу данных</button>
+    </form>
 
 </div>
 <footer th:replace ="fragments/footer::foot-privacy"></footer>
 
 <div th:replace ="fragments/footer::foot"></div>
 
+<!--
 <script>
     $(document).ready(function(){
         $("#qrCodeFile").change(function(){
@@ -112,7 +132,7 @@
         });
     });
 </script>
-
+-->
 
 
 </body>

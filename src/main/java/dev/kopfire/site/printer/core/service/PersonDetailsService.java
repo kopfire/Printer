@@ -28,7 +28,7 @@ public class PersonDetailsService implements UserDetailsService {
         Optional<Person> personNew = personRepository.findByUsername(username);
 
         if (personNew.isEmpty())
-            throw new UsernameNotFoundException("User not found");
+            throw new UsernameNotFoundException("Пользователь не найден");
 
         return personMapper.map(personNew.get(), PersonDTO.class);
     }

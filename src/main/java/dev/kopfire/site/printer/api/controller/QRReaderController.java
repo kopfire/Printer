@@ -2,8 +2,9 @@ package dev.kopfire.site.printer.api.controller;
 
 import dev.kopfire.site.printer.core.model.CartridgeDTO;
 import dev.kopfire.site.printer.core.service.CartridgesService;
-import dev.kopfire.site.printer.core.service.ModelCartridgeService;
 import dev.kopfire.site.printer.core.service.QRCodeService;
+import dev.kopfire.site.printer.core.service.TypesCartridgesService;
+import dev.kopfire.site.printer.db.repository.TypesCartridgesRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -24,16 +25,19 @@ public class QRReaderController {
 
     private final CartridgesService cartridgesService;
 
-    private final ModelCartridgeService modelCartridgeService;
+    private final TypesCartridgesService typesCartridgesService;
 
-    public QRReaderController(QRCodeService qrCodeService, CartridgesService cartridgesService, ModelCartridgeService modelCartridgeService) {
+    private final TypesCartridgesRepository typesCartridgesRepository;
+
+    public QRReaderController(QRCodeService qrCodeService, CartridgesService cartridgesService, TypesCartridgesService typesCartridgesService, TypesCartridgesRepository typesCartridgesRepository) {
         this.qrCodeService = qrCodeService;
         this.cartridgesService = cartridgesService;
-        this.modelCartridgeService = modelCartridgeService;
+        this.typesCartridgesService = typesCartridgesService;
+        this.typesCartridgesRepository = typesCartridgesRepository;
     }
 
     @GetMapping("/qr")
-    public String readerPage() {
+    public String qrPage() {
         return "qr";
     }
 
@@ -45,6 +49,7 @@ public class QRReaderController {
             return "redirect:/qr";
         }
         try {
+
             String qrContent = qrCodeService.decodeQR(qrCodeFile.getBytes());
 
             if (qrContent == null) {
@@ -60,12 +65,11 @@ public class QRReaderController {
             CartridgeDTO cartridgeDTO = cartridgesService.getCartridge(qrContent);
 
             if (cartridgeDTO != null) {
-                redirectAttributes.addFlashAttribute("cartridge", qrContent);
-                redirectAttributes.addFlashAttribute("qrContent", qrContent);
-                redirectAttributes.addFlashAttribute("model", modelCartridgeService.getName(cartridgeDTO.getType_cartridge()));
+                redirectAttributes.addFlashAttribute("name", qrContent);
+                redirectAttributes.addFlashAttribute("model", typesCartridgesService.getName(cartridgeDTO.getType_cartridge()));
                 redirectAttributes.addFlashAttribute("status", cartridgeDTO.getStatus());
-                if (cartridgeDTO.getStatus().equals("У пользователей"))
-                    redirectAttributes.addFlashAttribute("place", cartridgeDTO.getText_status());
+                redirectAttributes.addFlashAttribute("comment", cartridgeDTO.getText_status());
+                redirectAttributes.addFlashAttribute("typesCartridgesData", typesCartridgesRepository.findAll());
                 return "redirect:/qr";
             }
             redirectAttributes.addFlashAttribute("new_cartridge", 1);
@@ -75,13 +79,28 @@ public class QRReaderController {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
         }
 
+        redirectAttributes.addFlashAttribute("typesCartridgesData", typesCartridgesRepository.findAll());
+
         return "redirect:/qr";
     }
 
-    /*@GetMapping("/printer")
-    public String show(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
-        model.addAttribute("name", name);
-        return "printer";
-    }*/
+    @PostMapping("/addCartridge")
+    public String addCartridge(@RequestParam("name") String name, @RequestParam("model") Long model, @RequestParam("status") String status, @RequestParam("comment") String comment, RedirectAttributes redirectAttributes) {
 
+        CartridgeDTO addCartridgeDTO = new CartridgeDTO(model, name, status, comment);
+
+        cartridgesService.addCartridge(addCartridgeDTO);
+
+        return "redirect:/qr";
+    }
+
+    @PostMapping("/changeCartridge")
+    public String changeCartridge(@RequestParam("name_change") String name, @RequestParam("status_change") String status, @RequestParam("comment_change") String comment, RedirectAttributes redirectAttributes) {
+
+        CartridgeDTO cartridgeDTO = new CartridgeDTO(1L, name, status, comment);
+
+        cartridgesService.changeCartridge(cartridgeDTO);
+
+        return "redirect:/qr";
+    }
 }
