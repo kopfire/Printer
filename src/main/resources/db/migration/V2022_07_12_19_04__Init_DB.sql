@@ -6,14 +6,35 @@ create table public.types_cartridges
 
 create unique index types_cartridges_id_uindex ON public.types_cartridges(id);
 
+create table public.housings
+(
+    id             Serial primary key not null,
+    name           VARCHAR
+);
+
+
+create unique index housings_id_uindex ON public.housings(id);
+
+create table public.offices
+(
+    id             Serial primary key not null,
+    name           VARCHAR,
+    housing        Serial,
+    CONSTRAINT  offices_housings_fk foreign key (housing) REFERENCES housings(id)
+);
+
+create unique index offices_id_uindex ON public.offices(id);
+
 create table public.cartridges
 (
     id             Serial primary key not null,
-    type_cartridge int,
+    type_cartridge Serial,
     text_qr        VARCHAR,
     status         VARCHAR,
+    office         Serial,
     text_status    TEXT,
-    CONSTRAINT  cartridges_type_cartridge_fk foreign key (type_cartridge) REFERENCES types_cartridges(id)
+    CONSTRAINT  cartridges_type_cartridge_fk foreign key (type_cartridge) REFERENCES types_cartridges(id),
+    CONSTRAINT  cartridges_offices_fk foreign key (office) REFERENCES offices(id)
 );
 
 create unique index cartridges_id_uindex ON public.cartridges(id);
@@ -26,4 +47,28 @@ create table public.person
     role varchar(100) not null
 );
 
-insert into public.person (username, password, role) values ('kopfire', '$2a$10$2yip1jTrE8sGy9cNyHsUJul5nMROmO6I.MqaWYS4JSTqPMJ/kjWBe', 'ROLE_ADMIN')
+insert into public.person (username, password, role) values ('kopfire', '$2a$10$2yip1jTrE8sGy9cNyHsUJul5nMROmO6I.MqaWYS4JSTqPMJ/kjWBe', 'ROLE_ADMIN');
+
+insert into public.housings (name) values ('Главный корпус');
+insert into public.housings (name) values ('Пристрой');
+insert into public.housings (name) values ('Общежитие №1');
+insert into public.housings (name) values ('Общежитие №3');
+insert into public.housings (name) values ('Учебный корпус №2');
+insert into public.housings (name) values ('Учебный корпус №3');
+insert into public.housings (name) values ('Учебный корпус №7');
+insert into public.housings (name) values ('Учебный корпус №8');
+insert into public.housings (name) values ('Учебный корпус №9');
+insert into public.housings (name) values ('АЦКК');
+insert into public.housings (name) values ('Знаменск УК №1');
+insert into public.housings (name) values ('Знаменск УК №2');
+insert into public.housings (name) values ('Общежитие №2');
+insert into public.housings (name) values ('Общежитие №4');
+insert into public.housings (name) values ('Общежитие №5');
+insert into public.housings (name) values ('Общежитие №6');
+insert into public.housings (name) values ('Общежитие №7');
+
+insert into public.offices (name, housing) values ('112а', 1);
+
+insert into public.types_cartridges (name) values ('12а');
+
+insert into public.cartridges (type_cartridge, text_qr, status, office, text_status) values (1, 'АГУ_Картридж_1', 'В работе', 1, '');

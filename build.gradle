@@ -29,7 +29,6 @@ dependencies {
 	implementation 'com.google.zxing:javase:3.5.0'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 	implementation 'org.imgscalr:imgscalr-lib:4.2'
-	//implementation 'org.hibernate.common:hibernate-commons-annotations:6.0.2.Final'
 	compileOnly 'org.projectlombok:lombok:1.18.24'
 	annotationProcessor 'org.projectlombok:lombok:1.18.24'
 	runtimeOnly 'org.postgresql:postgresql'

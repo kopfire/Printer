@@ -9,39 +9,27 @@
 
 
 <div class="container-fluid">
-    <h1 class="top-name center-block text-center">Картриджи</h1>
+    <h1 class="top-name center-block text-center">Кабинеты</h1>
     <div class="table-responsive">
         <table class="table table-bordered ">
             <thead>
                 <tr class = "text-center">
                     <th>
-                        Название
+                        Корпус
                     </th>
                     <th>
-                        Тип
-                    </th>
-                    <th>
-                        Статус
-                    </th>
-                    <th>
-                        Комментарий
+                        Кабинет
                     </th>
                 </tr>
             </thead>
             <tbody>
-                <th:block th:each="cartridge : ${cartridgesData}">
+                <th:block th:each="offices : ${officesData}">
                     <tr class = "text-center">
                         <td class="align-middle">
-                            <p th:utext="${cartridge.getText_qr()}"></p>
+                            <p th:utext="${offices.getHousing()}"></p>
                         </td>
                         <td class="align-middle">
-                            <p th:utext="${cartridge.getType_cartridge()}"></p>
-                        </td>
-                        <td class="align-middle">
-                            <p th:utext="${cartridge.getStatus()}"></p>
-                        </td>
-                        <td class="align-middle">
-                            <p th:utext="${cartridge.getText_status()}"></p>
+                            <p th:utext="${offices.getName()}"></p>
                         </td>
                     </tr>
                 </th:block>

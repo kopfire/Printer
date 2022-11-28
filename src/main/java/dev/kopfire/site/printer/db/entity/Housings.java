@@ -10,8 +10,8 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "types_cartridges")
-public class TypesCartridges {
+@Table(name = "housings")
+public class Housings {
 
     @Id
     @Column
@@ -21,6 +21,6 @@ public class TypesCartridges {
     @Column
     private String name;
 
-    @OneToOne(mappedBy = "types_cartridges")
-    private Cartridge cartridge;
+    @OneToOne(mappedBy = "housings")
+    private Offices offices;
 }

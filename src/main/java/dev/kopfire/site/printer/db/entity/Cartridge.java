@@ -18,11 +18,20 @@ public class Cartridge {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
-    private Long type_cartridge;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "type_cartridge", referencedColumnName = "id")
+    private TypesCartridges type_cartridge;
 
     @Column
     private String text_qr;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "housing", referencedColumnName = "id")
+    private Housings housing;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "office", referencedColumnName = "id")
+    private Offices office;
 
     @Column
     private String status;

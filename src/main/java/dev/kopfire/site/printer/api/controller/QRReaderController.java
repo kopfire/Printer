@@ -1,9 +1,13 @@
 package dev.kopfire.site.printer.api.controller;
 
 import dev.kopfire.site.printer.core.model.CartridgeDTO;
+import dev.kopfire.site.printer.core.model.TypesCartridgesDTO;
 import dev.kopfire.site.printer.core.service.CartridgesService;
 import dev.kopfire.site.printer.core.service.QRCodeService;
 import dev.kopfire.site.printer.core.service.TypesCartridgesService;
+import dev.kopfire.site.printer.db.entity.Offices;
+import dev.kopfire.site.printer.db.entity.TypesCartridges;
+import dev.kopfire.site.printer.db.repository.OfficesRepository;
 import dev.kopfire.site.printer.db.repository.TypesCartridgesRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,11 +33,18 @@ public class QRReaderController {
 
     private final TypesCartridgesRepository typesCartridgesRepository;
 
-    public QRReaderController(QRCodeService qrCodeService, CartridgesService cartridgesService, TypesCartridgesService typesCartridgesService, TypesCartridgesRepository typesCartridgesRepository) {
+    private final OfficesRepository officesRepository;
+
+    public QRReaderController(QRCodeService qrCodeService,
+                              CartridgesService cartridgesService,
+                              TypesCartridgesService typesCartridgesService,
+                              TypesCartridgesRepository typesCartridgesRepository,
+                              OfficesRepository officesRepository) {
         this.qrCodeService = qrCodeService;
         this.cartridgesService = cartridgesService;
         this.typesCartridgesService = typesCartridgesService;
         this.typesCartridgesRepository = typesCartridgesRepository;
+        this.officesRepository = officesRepository;
     }
 
     @GetMapping("/qr")
@@ -66,7 +77,7 @@ public class QRReaderController {
 
             if (cartridgeDTO != null) {
                 redirectAttributes.addFlashAttribute("name", qrContent);
-                redirectAttributes.addFlashAttribute("model", typesCartridgesService.getName(cartridgeDTO.getType_cartridge()));
+                redirectAttributes.addFlashAttribute("model", cartridgeDTO.getType_cartridge().getName());
                 redirectAttributes.addFlashAttribute("status", cartridgeDTO.getStatus());
                 redirectAttributes.addFlashAttribute("comment", cartridgeDTO.getText_status());
                 redirectAttributes.addFlashAttribute("typesCartridgesData", typesCartridgesRepository.findAll());
@@ -85,9 +96,13 @@ public class QRReaderController {
     }
 
     @PostMapping("/addCartridge")
-    public String addCartridge(@RequestParam("name") String name, @RequestParam("model") Long model, @RequestParam("status") String status, @RequestParam("comment") String comment, RedirectAttributes redirectAttributes) {
+    public String addCartridge(@RequestParam("name") String name, @RequestParam("model") Long model, @RequestParam("status") String status, @RequestParam("comment") String comment, @RequestParam("office") Long office, RedirectAttributes redirectAttributes) {
 
-        CartridgeDTO addCartridgeDTO = new CartridgeDTO(model, name, status, comment);
+        TypesCartridges modelDTO = typesCartridgesRepository.getReferenceById(model);
+
+        Offices officeDTO = officesRepository.getReferenceById(office);
+
+        CartridgeDTO addCartridgeDTO = new CartridgeDTO(modelDTO, name, status, comment, officeDTO);
 
         cartridgesService.addCartridge(addCartridgeDTO);
 
@@ -95,9 +110,13 @@ public class QRReaderController {
     }
 
     @PostMapping("/changeCartridge")
-    public String changeCartridge(@RequestParam("name_change") String name, @RequestParam("status_change") String status, @RequestParam("comment_change") String comment, RedirectAttributes redirectAttributes) {
+    public String changeCartridge(@RequestParam("name_change") String name, @RequestParam("status_change") String status, @RequestParam("comment_change") String comment, @RequestParam("office") Long office, RedirectAttributes redirectAttributes) {
 
-        CartridgeDTO cartridgeDTO = new CartridgeDTO(1L, name, status, comment);
+        TypesCartridges modelDTO = typesCartridgesRepository.getReferenceById(1L);
+
+        Offices officeDTO = officesRepository.getReferenceById(office);
+
+        CartridgeDTO cartridgeDTO = new CartridgeDTO(modelDTO, name, status, comment, officeDTO);
 
         cartridgesService.changeCartridge(cartridgeDTO);
 

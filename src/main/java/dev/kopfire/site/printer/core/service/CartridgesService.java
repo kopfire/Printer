@@ -35,6 +35,7 @@ public class CartridgesService {
 
         cartridgesNew.setStatus(cartridge.getStatus());
         cartridgesNew.setText_status(cartridge.getText_status());
+        cartridgesNew.setOffice(cartridge.getOffice());
 
         cartridgesRepository.save(cartridgesNew);
     }
