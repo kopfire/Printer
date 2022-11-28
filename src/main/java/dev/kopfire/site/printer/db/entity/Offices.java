@@ -26,5 +26,7 @@ public class Offices {
     private Housings housing;
 
     @OneToOne(mappedBy = "types_cartridges")
+
     private Cartridge cartridge;
+
 }

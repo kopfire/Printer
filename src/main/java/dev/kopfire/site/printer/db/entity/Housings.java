@@ -21,6 +21,8 @@ public class Housings {
     @Column
     private String name;
 
-    @OneToOne(mappedBy = "housings")
-    private Offices offices;
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "id")
+    private Cartridge cartridge;
 }

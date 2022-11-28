@@ -25,8 +25,9 @@ public class Cartridge {
     @Column
     private String text_qr;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "housing", referencedColumnName = "id")
+
+    @OneToOne(mappedBy = "housing", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
     private Housings housing;
 
     @OneToOne(cascade = CascadeType.ALL)

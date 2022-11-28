@@ -1,6 +1,5 @@
 package dev.kopfire.site.printer.api.controller;
 
-import dev.kopfire.site.printer.db.repository.CartridgesRepository;
 import dev.kopfire.site.printer.db.repository.TypesCartridgesRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
