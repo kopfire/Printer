@@ -24,11 +24,4 @@ public class CartridgesController {
     public ModelAndView cartridgesPage() {
         return new ModelAndView("/cartridges", Collections.singletonMap("cartridgesData", cartridgesRepository.findAll()));
     }
-
-    public static Specification<Cartridge> hasBookWithTitle(int type_cartridge) {
-        return (root, query, criteriaBuilder) -> {
-            Join<Cartridge, TypesCartridges> authorsBook = root.join("books");
-            return criteriaBuilder.equal(authorsBook.get("title"), type_cartridge);
-        };
-    }
 }

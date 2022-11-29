@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,8 +23,6 @@ public class Housings {
     @Column
     private String name;
 
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "id")
-    private Cartridge cartridge;
+    @OneToMany(targetEntity=Cartridge.class, mappedBy="id",cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Offices> officesList = new ArrayList<>();
 }

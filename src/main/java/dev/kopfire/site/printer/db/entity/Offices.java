@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,12 +23,12 @@ public class Offices {
     @Column
     private String name;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "housing", referencedColumnName = "id")
+
+    @ManyToOne()
+    @JoinColumn(name="office", referencedColumnName = "id", insertable = false, updatable = false)
     private Housings housing;
 
-    @OneToOne(mappedBy = "types_cartridges")
-
-    private Cartridge cartridge;
+    @OneToMany(targetEntity=Cartridge.class, mappedBy="id",cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Cartridge> cartridgeList = new ArrayList<>();
 
 }
