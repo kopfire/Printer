@@ -12,7 +12,7 @@
         <div class="form-group">
             <input type="file" class="form-control-file" id="qrCodeFile" name="qrCodeFile" capture="environment" accept="image/*">
         </div>
-        <button   type="submit" class="btn btn-primary">Загрузить</button>
+        <button   type="submit" class="btn btn-primary" id="download_btn" hidden>Загрузить</button>
     </form>
     <p class="text-danger" th:if="${errorMessage}" th:text="${errorMessage}"></p>
 
@@ -30,6 +30,12 @@
                     </th>
                     <th>
                         Статус
+                    </th>
+                    <th id="hidden_house_tr" hidden>
+                        Корпус
+                    </th>
+                    <th id="hidden_office_tr" hidden>
+                        Отдел
                     </th>
                     <th>
                         Комментарий
@@ -57,8 +63,32 @@
                             <option th:unless="${#strings.contains(status, 'У пользователей')}" value="У пользователей" >У пользователей</option>
                         </select>
                     </td>
+                    <td class="align-middle" id="hidden_corp" hidden>
+                        <select class="align-middle"  aria-label=".form-select-lg example" id="status_change_2" name="status_change_2">
+                            <option th:if="${#strings.contains(status, 'В отделе')}" value="В отделе" selected>В отделе</option>
+                            <option th:unless="${#strings.contains(status, 'В отделе')}" value="В отделе" >В отделе</option>
+
+                            <option th:if="${#strings.contains(status, 'На заправке')}" value="На заправке" selected>На заправке</option>
+                            <option th:unless="${#strings.contains(status, 'На заправке')}" value="На заправке" >На заправке</option>
+
+                            <option th:if="${#strings.contains(status, 'У пользователей')}" value="У пользователей" selected>У пользователей</option>
+                            <option th:unless="${#strings.contains(status, 'У пользователей')}" value="У пользователей" >У пользователей</option>
+                        </select>
+                    </td>
+                    <td class="align-middle" id="hidden_office" hidden>
+                        <select class="align-middle"  aria-label=".form-select-lg example" id="status_change_3" name="status_change_3">
+                            <option th:if="${#strings.contains(status, 'В отделе')}" value="В отделе" selected>В отделе</option>
+                            <option th:unless="${#strings.contains(status, 'В отделе')}" value="В отделе" >В отделе</option>
+
+                            <option th:if="${#strings.contains(status, 'На заправке')}" value="На заправке" selected>На заправке</option>
+                            <option th:unless="${#strings.contains(status, 'На заправке')}" value="На заправке" >На заправке</option>
+
+                            <option th:if="${#strings.contains(status, 'У пользователей')}" value="У пользователей" selected>У пользователей</option>
+                            <option th:unless="${#strings.contains(status, 'У пользователей')}" value="У пользователей" >У пользователей</option>
+                        </select>
+                    </td>
                     <td class="align-middle">
-                        <input type="text" class="form-control" id="comment_change" name="comment_change" placeholder="Комментарий (кабинет)" th:value="${comment}">
+                        <input type="text" class="form-control" id="comment_change" name="comment_change" placeholder="Комментарий" th:value="${comment}">
                     </td>
                 </tr>
                 </tbody>
@@ -109,7 +139,7 @@
                     </td>
                     <td class="align-middle">
                         <div class="mb-3">
-                            <input type="text" class="form-control" id="comment" name="comment" placeholder="Комментарий (кабинет)">
+                            <input type="text" class="form-control" id="comment" name="comment" placeholder="Комментарий">
                         </div>
                     </td>
                 </tr>
@@ -124,16 +154,31 @@
 
 <div th:replace ="fragments/footer::foot"></div>
 
-<!--
+<script>
+    $('#status_change').on('change', function () {
+
+        if (this.value == 'У пользователей'){
+            $('#hidden_office').removeAttr('hidden');
+            $('#hidden_office_tr').removeAttr('hidden');
+            $('#hidden_house').removeAttr('hidden');
+            $('#hidden_house_tr').removeAttr('hidden');
+        }
+        else{
+            $('#hidden_office').attr("hidden",true);
+            $('#hidden_office_tr').attr("hidden",true);
+            $('#hidden_house').attr("hidden",true);
+            $('#hidden_house_tr').attr("hidden",true);
+        }
+    });
+</script>
+
 <script>
     $(document).ready(function(){
         $("#qrCodeFile").change(function(){
-            document.querySelector('.btn').click()
+            document.querySelector('#download_btn').click()
         });
     });
 </script>
--->
-
 
 </body>
 </html>

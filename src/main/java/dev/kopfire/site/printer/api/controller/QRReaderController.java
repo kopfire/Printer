@@ -1,6 +1,10 @@
 package dev.kopfire.site.printer.api.controller;
 
+import dev.kopfire.site.printer.core.mapper.CartridgesMapper;
+import dev.kopfire.site.printer.core.mapper.OfficesMapper;
+import dev.kopfire.site.printer.core.mapper.TypesCartridgesMapper;
 import dev.kopfire.site.printer.core.model.CartridgeDTO;
+import dev.kopfire.site.printer.core.model.OfficesDTO;
 import dev.kopfire.site.printer.core.model.TypesCartridgesDTO;
 import dev.kopfire.site.printer.core.service.CartridgesService;
 import dev.kopfire.site.printer.core.service.QRCodeService;
@@ -35,16 +39,24 @@ public class QRReaderController {
 
     private final OfficesRepository officesRepository;
 
+    private final OfficesMapper officesMapper;
+
+    private final TypesCartridgesMapper typesCartridgesMapper;
+
     public QRReaderController(QRCodeService qrCodeService,
                               CartridgesService cartridgesService,
                               TypesCartridgesService typesCartridgesService,
                               TypesCartridgesRepository typesCartridgesRepository,
-                              OfficesRepository officesRepository) {
+                              TypesCartridgesMapper typesCartridgesMapper,
+                              OfficesRepository officesRepository,
+                              OfficesMapper officesMapper) {
         this.qrCodeService = qrCodeService;
         this.cartridgesService = cartridgesService;
         this.typesCartridgesService = typesCartridgesService;
         this.typesCartridgesRepository = typesCartridgesRepository;
+        this.typesCartridgesMapper = typesCartridgesMapper;
         this.officesRepository = officesRepository;
+        this.officesMapper = officesMapper;
     }
 
     @GetMapping("/qr")
@@ -98,9 +110,9 @@ public class QRReaderController {
     @PostMapping("/addCartridge")
     public String addCartridge(@RequestParam("name") String name, @RequestParam("model") Long model, @RequestParam("status") String status, @RequestParam("comment") String comment, @RequestParam("office") Long office, RedirectAttributes redirectAttributes) {
 
-        TypesCartridges modelDTO = typesCartridgesRepository.getReferenceById(model);
+        TypesCartridgesDTO modelDTO = typesCartridgesMapper.map(typesCartridgesRepository.getReferenceById(model), TypesCartridgesDTO.class);
 
-        Offices officeDTO = officesRepository.getReferenceById(office);
+        OfficesDTO officeDTO = officesMapper.map(officesRepository.getReferenceById(office), OfficesDTO.class);
 
         CartridgeDTO addCartridgeDTO = new CartridgeDTO(modelDTO, name, status, comment, officeDTO);
 
@@ -112,9 +124,9 @@ public class QRReaderController {
     @PostMapping("/changeCartridge")
     public String changeCartridge(@RequestParam("name_change") String name, @RequestParam("status_change") String status, @RequestParam("comment_change") String comment, @RequestParam("office") Long office, RedirectAttributes redirectAttributes) {
 
-        TypesCartridges modelDTO = typesCartridgesRepository.getReferenceById(1L);
+        TypesCartridgesDTO modelDTO = typesCartridgesMapper.map(typesCartridgesRepository.getReferenceById(1L), TypesCartridgesDTO.class);
 
-        Offices officeDTO = officesRepository.getReferenceById(office);
+        OfficesDTO officeDTO = officesMapper.map(officesRepository.getReferenceById(office), OfficesDTO.class);
 
         CartridgeDTO cartridgeDTO = new CartridgeDTO(modelDTO, name, status, comment, officeDTO);
 

@@ -26,7 +26,7 @@
                 <th:block th:each="offices : ${officesData}">
                     <tr class = "text-center">
                         <td class="align-middle">
-                            <p th:utext="${offices.getHousing()}"></p>
+                            <p th:utext="${offices.getHousing().getName()}"></p>
                         </td>
                         <td class="align-middle">
                             <p th:utext="${offices.getName()}"></p>

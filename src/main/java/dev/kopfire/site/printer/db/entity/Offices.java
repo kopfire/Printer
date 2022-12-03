@@ -25,7 +25,7 @@ public class Offices {
 
 
     @ManyToOne()
-    @JoinColumn(name="office", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name="housing", referencedColumnName = "id", insertable = false, updatable = false)
     private Housings housing;
 
     @OneToMany(targetEntity=Cartridge.class, mappedBy="id",cascade=CascadeType.ALL, fetch = FetchType.LAZY)
