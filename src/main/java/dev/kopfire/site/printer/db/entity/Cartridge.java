@@ -16,11 +16,11 @@ public class Cartridge {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
 
     @ManyToOne()
-    @JoinColumn(name="type_cartridge", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "type_cartridge", referencedColumnName = "id")
     private TypesCartridges type_cartridge;
 
     @Column
@@ -28,7 +28,7 @@ public class Cartridge {
 
 
     @ManyToOne()
-    @JoinColumn(name="office", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "office", referencedColumnName = "id")
     private Offices office;
 
     @Column

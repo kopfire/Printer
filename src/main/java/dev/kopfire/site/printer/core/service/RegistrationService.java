@@ -25,7 +25,7 @@ public class RegistrationService {
     }
 
     @Transactional
-    public void register(PersonDTO person){
+    public void register(PersonDTO person) {
         person.setPassword(passwordEncoder.encode(person.getPassword()));
         person.setRole("ROLE_USER");
         personRepository.save(personMapper.map(person, Person.class));

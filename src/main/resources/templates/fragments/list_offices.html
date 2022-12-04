@@ -1,0 +1,111 @@
+<div th:fragment="list">
+    <td class="align-middle" id="hidden_office_add" th:hidden="(${status} != 'У пользователей')" >
+        <select class="align-middle"  aria-label=".form-select-lg example" id="offices" name="offices">
+            <optgroup label="Главный корпус" id="offices_1" name="offices_1">
+                <th:block th:each="officesData : ${officesData}"
+                          th:if="${officesData.getHousing().getId()} == 1"  >
+                    <option th:value="${officesData.getId()}" th:label="${officesData.getName()}"></option>
+                </th:block>
+            </optgroup>
+            <optgroup label="Пристрой" id="offices_2" name="offices_2" hidden>
+                <th:block th:each="officesData : ${officesData}"
+                          th:if="${officesData.getHousing().getId()} == 2"  >
+                    <option th:value="${officesData.getId()}" th:label="${officesData.getName()}"></option>
+                </th:block>
+            </optgroup>
+            <optgroup label="Общежитие №1" id="offices_3" name="offices_3" hidden>
+                <th:block th:each="officesData : ${officesData}"
+                          th:if="${officesData.getHousing().getId()} == 3"  >
+                    <option th:value="${officesData.getId()}" th:label="${officesData.getName()}"></option>
+                </th:block>
+            </optgroup>
+            <optgroup label="Общежитие №3" id="offices_4" name="offices_4" hidden>
+                <th:block th:each="officesData : ${officesData}"
+                          th:if="${officesData.getHousing().getId()} == 4"  >
+                    <option th:value="${officesData.getId()}" th:label="${officesData.getName()}"></option>
+                </th:block>
+            </optgroup>
+            <optgroup label="Учебный корпус №2" id="offices_5" name="offices_5" hidden>
+                <th:block th:each="officesData : ${officesData}"
+                          th:if="${officesData.getHousing().getId()} == 5"  >
+                    <option th:value="${officesData.getId()}" th:label="${officesData.getName()}"></option>
+                </th:block>
+            </optgroup>
+            <optgroup label="Учебный корпус №3" id="offices_6" name="offices_6" hidden>
+                <th:block th:each="officesData : ${officesData}"
+                          th:if="${officesData.getHousing().getId()} == 6"  >
+                    <option th:value="${officesData.getId()}" th:label="${officesData.getName()}"></option>
+                </th:block>
+            </optgroup>
+            <optgroup label="Учебный корпус №7" id="offices_7" name="offices_7" hidden>
+                <th:block th:each="officesData : ${officesData}"
+                          th:if="${officesData.getHousing().getId()} == 7"  >
+                    <option th:value="${officesData.getId()}" th:label="${officesData.getName()}"></option>
+                </th:block>
+            </optgroup>
+            <optgroup label="Учебный корпус №8" id="offices_8" name="offices_8" hidden>
+                <th:block th:each="officesData : ${officesData}"
+                          th:if="${officesData.getHousing().getId()} == 8"  >
+                    <option th:value="${officesData.getId()}" th:label="${officesData.getName()}"></option>
+                </th:block>
+            </optgroup>
+            <optgroup label="Учебный корпус №9" id="offices_9" name="offices_9" hidden>
+                <th:block th:each="officesData : ${officesData}"
+                          th:if="${officesData.getHousing().getId()} == 9"  >
+                    <option th:value="${officesData.getId()}" th:label="${officesData.getName()}"></option>
+                </th:block>
+            </optgroup>
+            <optgroup label="АЦКК" id="offices_10" name="offices_10" hidden>
+                <th:block th:each="officesData : ${officesData}"
+                          th:if="${officesData.getHousing().getId()} == 10"  >
+                    <option th:value="${officesData.getId()}" th:label="${officesData.getName()}"></option>
+                </th:block>
+            </optgroup>
+            <optgroup label="Знаменск УК №1" id="offices_11" name="offices_11" hidden>
+                <th:block th:each="officesData : ${officesData}"
+                          th:if="${officesData.getHousing().getId()} == 11"  >
+                    <option th:value="${officesData.getId()}" th:label="${officesData.getName()}"></option>
+                </th:block>
+            </optgroup>
+            <optgroup label="Знаменск УК №2" id="offices_12" name="offices_12" hidden>
+                <th:block th:each="officesData : ${officesData}"
+                          th:if="${officesData.getHousing().getId()} == 12"  >
+                    <option th:value="${officesData.getId()}" th:label="${officesData.getName()}"></option>
+                </th:block>
+            </optgroup>
+            <optgroup label="Общежитие №2" id="offices_13" name="offices_13" hidden>
+                <th:block th:each="officesData : ${officesData}"
+                          th:if="${officesData.getHousing().getId()} == 13"  >
+                    <option th:value="${officesData.getId()}" th:label="${officesData.getName()}"></option>
+                </th:block>
+            </optgroup>
+            <optgroup label="Общежитие №4" id="offices_14" name="offices_14" hidden>
+                <th:block th:each="officesData : ${officesData}"
+                          th:if="${officesData.getHousing().getId()} == 14"  >
+                    <option th:value="${officesData.getId()}" th:label="${officesData.getName()}"></option>
+                </th:block>
+            </optgroup>
+            <optgroup label="Общежитие №5" id="offices_15" name="offices_15" hidden>
+                <th:block th:each="officesData : ${officesData}"
+                          th:if="${officesData.getHousing().getId()} == 15"  >
+                    <option th:value="${officesData.getId()}" th:label="${officesData.getName()}"></option>
+                </th:block>
+            </optgroup>
+            <optgroup label="Общежитие №6" id="offices_16" name="offices_16" hidden>
+                <th:block th:each="officesData : ${officesData}"
+                          th:if="${officesData.getHousing().getId()} == 16"  >
+                    <option th:value="${officesData.getId()}" th:label="${officesData.getName()}"></option>
+                </th:block>
+            </optgroup>
+            <optgroup label="Общежитие №7" id="offices_17" name="offices_17" hidden>
+                <th:block th:each="officesData : ${officesData}"
+                          th:if="${officesData.getHousing().getId()} == 17"  >
+                    <option th:value="${officesData.getId()}" th:label="${officesData.getName()}"></option>
+                </th:block>
+            </optgroup>
+
+        </select>
+    </td>
+</div>
+
+

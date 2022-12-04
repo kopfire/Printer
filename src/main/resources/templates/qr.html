@@ -15,6 +15,7 @@
         <button   type="submit" class="btn btn-primary" id="download_btn" hidden>Загрузить</button>
     </form>
     <p class="text-danger" th:if="${errorMessage}" th:text="${errorMessage}"></p>
+    <p class="text-success" th:if="${successMessage}" th:text="${successMessage}"></p>
 
     <form method="POST" enctype="multipart/form-data" action="/changeCartridge">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
@@ -31,10 +32,10 @@
                     <th>
                         Статус
                     </th>
-                    <th id="hidden_house_tr" hidden>
+                    <th id="hidden_house_tr"  th:hidden="(${status} != 'У пользователей')" >
                         Корпус
                     </th>
-                    <th id="hidden_office_tr" hidden>
+                    <th id="hidden_office_tr" th:hidden="(${status} != 'У пользователей')" >
                         Отдел
                     </th>
                     <th>
@@ -43,6 +44,26 @@
                 </tr>
                 </thead>
                 <tbody>
+                <tr class = "text-center">
+                    <td class="align-middle">
+                        <p class="text">Старое значение:</p>
+                    </td>
+                    <td class="align-middle">
+                        <p class="text-danger" th:text="${model}"></p>
+                    </td>
+                    <td class="align-middle">
+                        <p class="text-danger" th:text="${status}"></p>
+                    </td>
+                    <td class="align-middle" id="hidden_house_old" th:hidden="${status} != 'У пользователей'">
+                        <p class="text-danger" th:text="${office?.getHousing()?.getName()}"></p>
+                    </td>
+                    <td class="align-middle" id="hidden_office_old" th:hidden="${status} != 'У пользователей'">
+                        <p class="text-danger"  th:text="${office?.getName()}"></p>
+                    </td>
+                    <td class="align-middle">
+                        <p class="text-danger"  th:text="${comment}"></p>
+                    </td>
+                </tr>
                 <tr class = "text-center">
                     <td class="align-middle">
                         <p class="text" th:text="${name}"></p>
@@ -63,30 +84,14 @@
                             <option th:unless="${#strings.contains(status, 'У пользователей')}" value="У пользователей" >У пользователей</option>
                         </select>
                     </td>
-                    <td class="align-middle" id="hidden_corp" hidden>
-                        <select class="align-middle"  aria-label=".form-select-lg example" id="status_change_2" name="status_change_2">
-                            <option th:if="${#strings.contains(status, 'В отделе')}" value="В отделе" selected>В отделе</option>
-                            <option th:unless="${#strings.contains(status, 'В отделе')}" value="В отделе" >В отделе</option>
-
-                            <option th:if="${#strings.contains(status, 'На заправке')}" value="На заправке" selected>На заправке</option>
-                            <option th:unless="${#strings.contains(status, 'На заправке')}" value="На заправке" >На заправке</option>
-
-                            <option th:if="${#strings.contains(status, 'У пользователей')}" value="У пользователей" selected>У пользователей</option>
-                            <option th:unless="${#strings.contains(status, 'У пользователей')}" value="У пользователей" >У пользователей</option>
+                    <td class="align-middle" id="hidden_house" th:hidden="(${status} != 'У пользователей')" >
+                        <select class="align-middle housings"  aria-label=".form-select-lg example" id="housings_change" name="housings_change">
+                            <th:block th:each="housingsData : ${housingsData}">
+                                <option th:value="${housingsData.getId()}" th:label="${housingsData.getName()}"></option>
+                            </th:block>
                         </select>
                     </td>
-                    <td class="align-middle" id="hidden_office" hidden>
-                        <select class="align-middle"  aria-label=".form-select-lg example" id="status_change_3" name="status_change_3">
-                            <option th:if="${#strings.contains(status, 'В отделе')}" value="В отделе" selected>В отделе</option>
-                            <option th:unless="${#strings.contains(status, 'В отделе')}" value="В отделе" >В отделе</option>
-
-                            <option th:if="${#strings.contains(status, 'На заправке')}" value="На заправке" selected>На заправке</option>
-                            <option th:unless="${#strings.contains(status, 'На заправке')}" value="На заправке" >На заправке</option>
-
-                            <option th:if="${#strings.contains(status, 'У пользователей')}" value="У пользователей" selected>У пользователей</option>
-                            <option th:unless="${#strings.contains(status, 'У пользователей')}" value="У пользователей" >У пользователей</option>
-                        </select>
-                    </td>
+                    <div th:replace ="fragments/list_offices::list"></div>
                     <td class="align-middle">
                         <input type="text" class="form-control" id="comment_change" name="comment_change" placeholder="Комментарий" th:value="${comment}">
                     </td>
@@ -99,7 +104,7 @@
 
     <form method="POST" enctype="multipart/form-data" action="/addCartridge">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-        <div class="table-responsive"  th:if="${new_cartridge}">
+        <div class="table-responsive"  th:if="${qrContent}">
             <table class="table table-bordered ">
                 <thead>
                 <tr class = "text-center">
@@ -111,6 +116,12 @@
                     </th>
                     <th>
                         Статус
+                    </th>
+                    <th id="hidden_house_add_tr" hidden>
+                        Корпус
+                    </th>
+                    <th id="hidden_office_add_tr" hidden>
+                        Отдел
                     </th>
                     <th>
                         Комментарий
@@ -137,48 +148,32 @@
                             <option value="У пользователей">У пользователей</option>
                         </select>
                     </td>
-                    <td class="align-middle">
-                        <div class="mb-3">
-                            <input type="text" class="form-control" id="comment" name="comment" placeholder="Комментарий">
-                        </div>
+                    <td class="align-middle" id="hidden_house_add" hidden>
+                        <select class="align-middle housings"  aria-label=".form-select-lg example" id="housings" name="housings">
+                            <th:block th:each="housingsData : ${housingsData}">
+                                <option th:value="${housingsData.getId()}" th:label="${housingsData.getName()}"></option>
+                            </th:block>
+                        </select>
                     </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <button type="submit" class="btn btn-primary" th:if="${new_cartridge}">Добавить в базу данных</button>
-    </form>
+                    <div th:replace ="fragments/list_offices::list"></div>
+                     <td class="align-middle">
+                         <div>
+                             <input type="text" class="form-control" id="comment" name="comment" placeholder="Комментарий">
+                         </div>
+                     </td>
+                 </tr>
+                 </tbody>
+             </table>
+         </div>
+         <button type="submit" class="btn btn-primary" th:if="${qrContent}">Добавить в базу данных</button>
+     </form>
 
-</div>
-<footer th:replace ="fragments/footer::foot-privacy"></footer>
+ </div>
+ <footer th:replace ="fragments/footer::foot-privacy"></footer>
 
-<div th:replace ="fragments/footer::foot"></div>
+ <div th:replace ="fragments/footer::foot"></div>
 
-<script>
-    $('#status_change').on('change', function () {
+ <div th:replace ="fragments/script::script"></div>
 
-        if (this.value == 'У пользователей'){
-            $('#hidden_office').removeAttr('hidden');
-            $('#hidden_office_tr').removeAttr('hidden');
-            $('#hidden_house').removeAttr('hidden');
-            $('#hidden_house_tr').removeAttr('hidden');
-        }
-        else{
-            $('#hidden_office').attr("hidden",true);
-            $('#hidden_office_tr').attr("hidden",true);
-            $('#hidden_house').attr("hidden",true);
-            $('#hidden_house_tr').attr("hidden",true);
-        }
-    });
-</script>
-
-<script>
-    $(document).ready(function(){
-        $("#qrCodeFile").change(function(){
-            document.querySelector('#download_btn').click()
-        });
-    });
-</script>
-
-</body>
-</html>
+ </body>
+ </html>

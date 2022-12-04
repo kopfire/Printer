@@ -9,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CartridgeDTO {
 
-    private Long id;
+    private long id;
     private TypesCartridgesDTO type_cartridge;
     private String text_qr;
     private String status;

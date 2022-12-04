@@ -1,18 +1,9 @@
 package dev.kopfire.site.printer.api.controller;
 
-import dev.kopfire.site.printer.core.mapper.CartridgesMapper;
-import dev.kopfire.site.printer.core.mapper.OfficesMapper;
-import dev.kopfire.site.printer.core.mapper.TypesCartridgesMapper;
 import dev.kopfire.site.printer.core.model.CartridgeDTO;
 import dev.kopfire.site.printer.core.model.OfficesDTO;
 import dev.kopfire.site.printer.core.model.TypesCartridgesDTO;
-import dev.kopfire.site.printer.core.service.CartridgesService;
-import dev.kopfire.site.printer.core.service.QRCodeService;
-import dev.kopfire.site.printer.core.service.TypesCartridgesService;
-import dev.kopfire.site.printer.db.entity.Offices;
-import dev.kopfire.site.printer.db.entity.TypesCartridges;
-import dev.kopfire.site.printer.db.repository.OfficesRepository;
-import dev.kopfire.site.printer.db.repository.TypesCartridgesRepository;
+import dev.kopfire.site.printer.core.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -23,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.util.Objects;
 
 @Controller
 public class QRReaderController {
@@ -35,28 +27,20 @@ public class QRReaderController {
 
     private final TypesCartridgesService typesCartridgesService;
 
-    private final TypesCartridgesRepository typesCartridgesRepository;
+    private final OfficesService officesService;
 
-    private final OfficesRepository officesRepository;
-
-    private final OfficesMapper officesMapper;
-
-    private final TypesCartridgesMapper typesCartridgesMapper;
+    private final HousingsService housingsService;
 
     public QRReaderController(QRCodeService qrCodeService,
                               CartridgesService cartridgesService,
                               TypesCartridgesService typesCartridgesService,
-                              TypesCartridgesRepository typesCartridgesRepository,
-                              TypesCartridgesMapper typesCartridgesMapper,
-                              OfficesRepository officesRepository,
-                              OfficesMapper officesMapper) {
+                              OfficesService officesService,
+                              HousingsService housingsService) {
         this.qrCodeService = qrCodeService;
         this.cartridgesService = cartridgesService;
         this.typesCartridgesService = typesCartridgesService;
-        this.typesCartridgesRepository = typesCartridgesRepository;
-        this.typesCartridgesMapper = typesCartridgesMapper;
-        this.officesRepository = officesRepository;
-        this.officesMapper = officesMapper;
+        this.officesService = officesService;
+        this.housingsService = housingsService;
     }
 
     @GetMapping("/qr")
@@ -92,45 +76,85 @@ public class QRReaderController {
                 redirectAttributes.addFlashAttribute("model", cartridgeDTO.getType_cartridge().getName());
                 redirectAttributes.addFlashAttribute("status", cartridgeDTO.getStatus());
                 redirectAttributes.addFlashAttribute("comment", cartridgeDTO.getText_status());
-                redirectAttributes.addFlashAttribute("typesCartridgesData", typesCartridgesRepository.findAll());
+                redirectAttributes.addFlashAttribute("office", cartridgeDTO.getOffice());
+                redirectAttributes.addFlashAttribute("typesCartridgesData", typesCartridgesService.findAll());
+                redirectAttributes.addFlashAttribute("housingsData", housingsService.findAll());
+                redirectAttributes.addFlashAttribute("officesData", officesService.findAll());
                 return "redirect:/qr";
             }
-            redirectAttributes.addFlashAttribute("new_cartridge", 1);
+
             redirectAttributes.addFlashAttribute("qrContent", qrContent);
+
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
         }
 
-        redirectAttributes.addFlashAttribute("typesCartridgesData", typesCartridgesRepository.findAll());
+        redirectAttributes.addFlashAttribute("typesCartridgesData", typesCartridgesService.findAll());
+        redirectAttributes.addFlashAttribute("housingsData", housingsService.findAll());
+        redirectAttributes.addFlashAttribute("officesData", officesService.findAll());
 
         return "redirect:/qr";
     }
 
     @PostMapping("/addCartridge")
-    public String addCartridge(@RequestParam("name") String name, @RequestParam("model") Long model, @RequestParam("status") String status, @RequestParam("comment") String comment, @RequestParam("office") Long office, RedirectAttributes redirectAttributes) {
+    public String addCartridge(@RequestParam("name") String name, @RequestParam("model") Long model, @RequestParam("status") String status, @RequestParam("comment") String comment, @RequestParam("housings") Long housings, @RequestParam("offices") Long offices, RedirectAttributes redirectAttributes) {
 
-        TypesCartridgesDTO modelDTO = typesCartridgesMapper.map(typesCartridgesRepository.getReferenceById(model), TypesCartridgesDTO.class);
+        TypesCartridgesDTO modelDTO = typesCartridgesService.getById(model);
 
-        OfficesDTO officeDTO = officesMapper.map(officesRepository.getReferenceById(office), OfficesDTO.class);
+        if (status.equals("У пользователей")) {
+            OfficesDTO officeDTO = officesService.getOffice(offices);
 
-        CartridgeDTO addCartridgeDTO = new CartridgeDTO(modelDTO, name, status, comment, officeDTO);
+            if (!Objects.equals(officeDTO.getHousing().getId(), housings)) {
+                redirectAttributes.addFlashAttribute("errorMessage", "Некорректный кабинет.");
+                redirectAttributes.addFlashAttribute("qrContent", name);
+                redirectAttributes.addFlashAttribute("typesCartridgesData", typesCartridgesService.findAll());
+                redirectAttributes.addFlashAttribute("housingsData", housingsService.findAll());
+                redirectAttributes.addFlashAttribute("officesData", officesService.findAll());
+                return "redirect:/qr";
+            }
+
+            CartridgeDTO addCartridgeDTO = new CartridgeDTO(modelDTO, name, status, comment, officeDTO);
+            cartridgesService.addCartridge(addCartridgeDTO);
+            redirectAttributes.addFlashAttribute("successMessage", name + " успешно добавлен");
+            return "redirect:/qr";
+        }
+
+        CartridgeDTO addCartridgeDTO = new CartridgeDTO(modelDTO, name, status, comment, null);
 
         cartridgesService.addCartridge(addCartridgeDTO);
+
+        redirectAttributes.addFlashAttribute("successMessage", name + " успешно добавлен");
 
         return "redirect:/qr";
     }
 
     @PostMapping("/changeCartridge")
-    public String changeCartridge(@RequestParam("name_change") String name, @RequestParam("status_change") String status, @RequestParam("comment_change") String comment, @RequestParam("office") Long office, RedirectAttributes redirectAttributes) {
+    public String changeCartridge(@RequestParam("name_change") String name, @RequestParam("status_change") String status, @RequestParam("comment_change") String comment, @RequestParam("housings_change") Long housings, @RequestParam("offices") Long offices, RedirectAttributes redirectAttributes) {
 
-        TypesCartridgesDTO modelDTO = typesCartridgesMapper.map(typesCartridgesRepository.getReferenceById(1L), TypesCartridgesDTO.class);
+        if (status.equals("У пользователей")) {
+            OfficesDTO officeDTO = officesService.getOffice(offices);
 
-        OfficesDTO officeDTO = officesMapper.map(officesRepository.getReferenceById(office), OfficesDTO.class);
+            if (!Objects.equals(officeDTO.getHousing().getId(), housings)) {
+                redirectAttributes.addFlashAttribute("errorMessage", "Некорректный кабинет.");
+                /*redirectAttributes.addFlashAttribute("status_change", status);
+                redirectAttributes.addFlashAttribute("name", name);
+                redirectAttributes.addFlashAttribute("housingsData", housingsService.findAll());
+                redirectAttributes.addFlashAttribute("officesData", officesService.findAll());*/
+                return "redirect:/qr";
+            }
 
-        CartridgeDTO cartridgeDTO = new CartridgeDTO(modelDTO, name, status, comment, officeDTO);
+            CartridgeDTO cartridgeDTO = new CartridgeDTO(null, name, status, comment, officeDTO);
+            cartridgesService.changeCartridge(cartridgeDTO);
+            redirectAttributes.addFlashAttribute("successMessage", name + " успешно изменен");
+            return "redirect:/qr";
+        }
+
+        CartridgeDTO cartridgeDTO = new CartridgeDTO(null, name, status, comment, null);
 
         cartridgesService.changeCartridge(cartridgeDTO);
+
+        redirectAttributes.addFlashAttribute("successMessage", name + " успешно изменен");
 
         return "redirect:/qr";
     }

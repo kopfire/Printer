@@ -1,8 +1,12 @@
 package dev.kopfire.site.printer.core.service;
 
 import dev.kopfire.site.printer.core.mapper.CartridgesMapper;
+import dev.kopfire.site.printer.core.mapper.OfficesMapper;
 import dev.kopfire.site.printer.core.model.CartridgeDTO;
+import dev.kopfire.site.printer.core.model.HousingsDTO;
 import dev.kopfire.site.printer.db.entity.Cartridge;
+import dev.kopfire.site.printer.db.entity.Housings;
+import dev.kopfire.site.printer.db.entity.Offices;
 import dev.kopfire.site.printer.db.repository.CartridgesRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,29 +19,28 @@ public class CartridgesService {
 
     private final CartridgesMapper cartridgesMapper;
 
-    public CartridgesService(CartridgesRepository cartridgesRepository, CartridgesMapper cartridgesMapper) {
+    private final OfficesMapper officesMapper;
+
+    public CartridgesService(CartridgesRepository cartridgesRepository, CartridgesMapper cartridgesMapper, OfficesMapper officesMapper) {
         this.cartridgesRepository = cartridgesRepository;
         this.cartridgesMapper = cartridgesMapper;
+        this.officesMapper = officesMapper;
     }
 
-    public CartridgeDTO addCartridge(CartridgeDTO cartridge) {
+    public void addCartridge(CartridgeDTO cartridge) {
 
         Cartridge cartridgesNew = cartridgesMapper.map(cartridge, Cartridge.class);
-        cartridgesNew = cartridgesRepository.save(cartridgesNew);
-        cartridge = cartridgesMapper.map(cartridgesNew, CartridgeDTO.class);
-        return cartridge;
+        cartridgesRepository.save(cartridgesNew);
     }
 
     public void changeCartridge(CartridgeDTO cartridge) {
-        List<Cartridge> cartridgeList = cartridgesRepository.findByQR(cartridge.getText_qr());
+        Cartridge cartridgesOld = cartridgesRepository.findByQR(cartridge.getText_qr()).get(0);
 
-        Cartridge cartridgesNew = cartridgeList.get(0);
+        cartridgesOld.setStatus(cartridge.getStatus());
+        cartridgesOld.setText_status(cartridge.getText_status());
+        cartridgesOld.setOffice(officesMapper.map(cartridge.getOffice(), Offices.class));
 
-        cartridgesNew.setStatus(cartridge.getStatus());
-        cartridgesNew.setText_status(cartridge.getText_status());
-        //cartridgesNew.setOffice(cartridge.getOffice());
-
-        cartridgesRepository.save(cartridgesNew);
+        cartridgesRepository.save(cartridgesOld);
     }
 
     public CartridgeDTO getCartridge(String text_qr) {
@@ -45,5 +48,13 @@ public class CartridgesService {
         if (cartridgeList.size() == 0)
             return null;
         return cartridgesMapper.map(cartridgeList.get(0), CartridgeDTO.class);
+    }
+
+    public List<CartridgeDTO> findAll() {
+        return cartridgesMapper.mapAsList(cartridgesRepository.findAll(), CartridgeDTO.class);
+    }
+
+    public boolean cartridgeAlreadyExists(String name) {
+        return cartridgesRepository.findByQR(name) != null;
     }
 }

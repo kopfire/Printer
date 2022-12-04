@@ -37,7 +37,7 @@ public class AuthController {
 
     @PostMapping("/registration")
     public String registration(@ModelAttribute("person") @Valid PersonDTO person,
-            BindingResult bindingResult) {
+                               BindingResult bindingResult) {
 
         personValidator.validate(person, bindingResult);
 

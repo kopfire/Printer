@@ -2,6 +2,7 @@
         <title>АГУ принтеры</title>
         <link href="webjars/bootstrap/4.0.0/css/bootstrap.min.css"
               rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="/static/css/auth.css" th:href="@{/css/header.css}" />
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 
@@ -20,22 +21,28 @@
                             <a class="nav-link text-dark" href="/printers">Принтеры</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" href="/cartridges">Картриджи</a>
+                            <div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')">
+                                <a class="nav-link text-dark" href="/cartridges">Картриджи</a>
+                            </div>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" href="/types_cartridges">Типы картриджей</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" href="/qr">Сканер</a>
-                        </li>
-                        <li class="nav-item">
-                            <div sec:authorize="hasRole('ROLE_ADMIN')">
-                                <a class="nav-link text-dark" href="/offices">Офисы</a>
+                            <div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')">
+                                <a class="nav-link text-dark" href="/qr">Сканер</a>
                             </div>
                         </li>
                         <li class="nav-item">
                             <div sec:authorize="hasRole('ROLE_ADMIN')">
-                                <a class="nav-link text-dark" href="/admin">Админка</a>
+                                <a class="nav-link text-dark" href="/types_cartridges">Типы картриджей</a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <div sec:authorize="hasRole('ROLE_ADMIN')">
+                                <a class="nav-link text-dark" href="/offices">Кабинеты</a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <div sec:authorize="hasRole('ROLE_ADMIN')">
+                                <a class="nav-link text-dark" href="/persons">Пользователи</a>
                             </div>
                         </li>
                     </ul>

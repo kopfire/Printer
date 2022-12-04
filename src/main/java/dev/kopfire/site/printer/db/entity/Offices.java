@@ -18,14 +18,13 @@ public class Offices {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     @Column
     private String name;
 
-
     @ManyToOne()
-    @JoinColumn(name="housing", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name="housing", referencedColumnName = "id")
     private Housings housing;
 
     @OneToMany(targetEntity=Cartridge.class, mappedBy="id",cascade=CascadeType.ALL, fetch = FetchType.LAZY)

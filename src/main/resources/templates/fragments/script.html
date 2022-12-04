@@ -1,0 +1,129 @@
+<div th:fragment="script">
+  <script>
+    $('.housings').on('change', function () {
+      hiddenAll()
+      switch (this.value){
+        case "1":
+          $('#offices_1').removeAttr('hidden');
+          break;
+        case "2":
+          $('#offices_2').removeAttr('hidden');
+          break;
+        case "3":
+          $('#offices_3').removeAttr('hidden');
+          break;
+        case "4":
+          $('#offices_4').removeAttr('hidden');
+          break;
+        case "5":
+          $('#offices_5').removeAttr('hidden');
+          break;
+        case "6":
+          $('#offices_6').removeAttr('hidden');
+          break;
+        case "7":
+          $('#offices_7').removeAttr('hidden');
+          break;
+        case "8":
+          $('#offices_8').removeAttr('hidden');
+          break;
+        case "9":
+          $('#offices_9').removeAttr('hidden');
+          break;
+        case "10":
+          $('#offices_10').removeAttr('hidden');
+          break;
+        case "11":
+          $('#offices_11').removeAttr('hidden');
+          break;
+        case "12":
+          $('#offices_12').removeAttr('hidden');
+          break;
+        case "13":
+          $('#offices_13').removeAttr('hidden');
+          break;
+        case "14":
+          $('#offices_14').removeAttr('hidden');
+          break;
+        case "15":
+          $('#offices_15').removeAttr('hidden');
+          break;
+        case "16":
+          $('#offices_16').removeAttr('hidden');
+          break;
+        case "17":
+          $('#offices_17').removeAttr('hidden');
+          break;
+
+      }
+    });
+
+    function hiddenAll(){
+      $('#offices_1').attr("hidden",true);
+      $('#offices_2').attr("hidden",true);
+      $('#offices_3').attr("hidden",true);
+      $('#offices_4').attr("hidden",true);
+      $('#offices_5').attr("hidden",true);
+      $('#offices_6').attr("hidden",true);
+      $('#offices_7').attr("hidden",true);
+      $('#offices_8').attr("hidden",true);
+      $('#offices_9').attr("hidden",true);
+      $('#offices_10').attr("hidden",true);
+      $('#offices_11').attr("hidden",true);
+      $('#offices_12').attr("hidden",true);
+      $('#offices_13').attr("hidden",true);
+      $('#offices_14').attr("hidden",true);
+      $('#offices_15').attr("hidden",true);
+      $('#offices_16').attr("hidden",true);
+      $('#offices_17').attr("hidden",true);
+    }
+  </script>
+
+  <script>
+    $('#status_change').on('change', function () {
+
+      if (this.value == 'У пользователей'){
+        $('#hidden_office_add').removeAttr('hidden');
+        $('#hidden_office_old').removeAttr('hidden');
+        $('#hidden_office_tr').removeAttr('hidden');
+        $('#hidden_house').removeAttr('hidden');
+        $('#hidden_house_old').removeAttr('hidden');
+        $('#hidden_house_tr').removeAttr('hidden');
+      }
+      else{
+        $('#hidden_office_add').attr("hidden",true);
+        $('#hidden_office_old').attr("hidden",true);
+        $('#hidden_office_tr').attr("hidden",true);
+        $('#hidden_house').attr("hidden",true);
+        $('#hidden_house_old').attr("hidden",true);
+        $('#hidden_house_tr').attr("hidden",true);
+      }
+    });
+  </script>
+
+  <script>
+    $('#status').on('change', function () {
+
+      if (this.value == 'У пользователей'){
+        $('#hidden_office_add').removeAttr('hidden');
+        $('#hidden_office_add_tr').removeAttr('hidden');
+        $('#hidden_house_add').removeAttr('hidden');
+        $('#hidden_house_add_tr').removeAttr('hidden');
+      }
+      else{
+        $('#hidden_office_add').attr("hidden",true);
+        $('#hidden_office_add_tr').attr("hidden",true);
+        $('#hidden_house_add').attr("hidden",true);
+        $('#hidden_house_add_tr').attr("hidden",true);
+      }
+    });
+  </script>
+
+  <script>
+    $(document).ready(function(){
+      $("#qrCodeFile").change(function(){
+        document.querySelector('#download_btn').click()
+      });
+    });
+  </script>
+</div>

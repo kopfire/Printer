@@ -9,7 +9,11 @@ import lombok.Setter;
 @NoArgsConstructor
 public class TypesCartridgesDTO {
 
-    private Long id;
+    private long id;
 
     private String name;
+
+    public TypesCartridgesDTO(String name){
+        this.name = name;
+    }
 }

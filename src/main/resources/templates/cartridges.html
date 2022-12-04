@@ -41,16 +41,16 @@
                             <p th:utext="${cartridge.getText_qr()}"></p>
                         </td>
                         <td class="align-middle">
-                            <p th:utext="${cartridge.getType_cartridge().getName()}"></p>
+                            <p th:utext="${cartridge.getType_cartridge()?.getName()}"></p>
                         </td>
                         <td class="align-middle">
                             <p th:utext="${cartridge.getStatus()}"></p>
                         </td>
                         <td class="align-middle">
-                            <p th:utext="${cartridge.getOffice().getHousing().getName()}"></p>
+                            <p th:utext="${cartridge.getOffice()?.getHousing()?.getName()}"></p>
                         </td>
                         <td class="align-middle">
-                            <p th:utext="${cartridge.getOffice().getName()}"></p>
+                            <p th:utext="${cartridge.getOffice()?.getName()}"></p>
                         </td>
                         <td class="align-middle">
                             <p th:utext="${cartridge.getText_status()}"></p>

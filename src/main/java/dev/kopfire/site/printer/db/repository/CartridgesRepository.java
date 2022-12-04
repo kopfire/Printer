@@ -13,4 +13,6 @@ public interface CartridgesRepository extends JpaRepository<Cartridge, Long> {
 
     @Query(value = "select u from Cartridge u where u.text_qr = :text_qr")
     List<Cartridge> findByQR(@Param("text_qr") String text_qr);
+
+
 }

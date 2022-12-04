@@ -18,11 +18,11 @@ public class TypesCartridges {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     @Column
     private String name;
 
-    @OneToMany(targetEntity=Cartridge.class, mappedBy="id",cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(targetEntity = Cartridge.class, mappedBy = "id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Cartridge> cartridgeList = new ArrayList<>();
 }

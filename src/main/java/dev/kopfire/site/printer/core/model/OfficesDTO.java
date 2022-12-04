@@ -9,9 +9,14 @@ import lombok.Setter;
 @NoArgsConstructor
 public class OfficesDTO {
 
-    private Long id;
+    private long id;
 
     private String name;
 
     private HousingsDTO housing;
+
+    public OfficesDTO(String name, HousingsDTO housing) {
+        this.name = name;
+        this.housing = housing;
+    }
 }
