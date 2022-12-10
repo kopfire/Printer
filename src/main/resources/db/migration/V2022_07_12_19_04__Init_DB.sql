@@ -45,7 +45,7 @@ CREATE TABLE public.person
     role VARCHAR(100) NOT NULL
 );
 
-INSERT INTO public.person (username, password, role) VALUES ('kopfire', '$2a$10$2yip1jTrE8sGy9cNyHsUJul5nMROmO6I.MqaWYS4JSTqPMJ/kjWBe', 'ROLE_ADMIN');
+INSERT INTO public.person (username, password, role) VALUES ('admin', '$2a$10$ylP/CPQiNcMuaMaI3wz47ulUV2GvAV2y0ATxmrYaDvzGFkHFgtpze', 'ROLE_ADMIN');
 
 INSERT INTO public.housings (name) VALUES ('Главный корпус');
 INSERT INTO public.housings (name) VALUES ('Пристрой');
