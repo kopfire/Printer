@@ -25,15 +25,17 @@ dependencies {
 	implementation 'ma.glasnost.orika:orika-core:1.5.4'
 	implementation 'org.webjars.bower:bootstrap-social:5.1.1'
 	implementation 'org.webjars.npm:bootstrap-icons:1.9.1'
-	implementation 'com.google.zxing:core:3.5.0'
-	implementation 'com.google.zxing:javase:3.5.0'
+	implementation 'com.google.zxing:core:3.5.1'
+	implementation 'com.google.zxing:javase:3.5.1'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 	implementation 'org.imgscalr:imgscalr-lib:4.2'
+	implementation 'com.vladmihalcea:hibernate-types-55:2.20.0'
 	compileOnly 'org.projectlombok:lombok:1.18.24'
 	annotationProcessor 'org.projectlombok:lombok:1.18.24'
 	runtimeOnly 'org.postgresql:postgresql'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
 }
 
 flyway{

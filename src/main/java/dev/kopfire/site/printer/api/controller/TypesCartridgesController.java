@@ -47,4 +47,30 @@ public class TypesCartridgesController {
 
         return "redirect:/types_cartridges";
     }
+
+    @PostMapping("/deleteTypeCartridge")
+    public String deleteCartridge(@RequestParam("id_del") Long id_del) {
+
+        typesCartridgesService.deleteTypesCartridges(id_del);
+
+        return "redirect:/types_cartridges";
+    }
+
+    @PostMapping("/changeTypeCartridge")
+    public String changeCartridge(@RequestParam("id_change") Long id_change, @RequestParam("name_change") String name_change, RedirectAttributes redirectAttributes) {
+
+        if (!name_change.matches("[a-zA-Z0-9-]+")) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Название содержит некорректные символы (Кириллица запрещена)");
+            return "redirect:/types_cartridges";
+        }
+
+        if (typesCartridgesService.typesCartridgesAlreadyExists(name_change)) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Этот тип уже добавлен");
+            return "redirect:/types_cartridges";
+        }
+
+        typesCartridgesService.changeTypesCartridges(id_change, name_change);
+
+        return "redirect:/types_cartridges";
+    }
 }

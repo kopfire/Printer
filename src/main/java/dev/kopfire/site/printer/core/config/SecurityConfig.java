@@ -28,10 +28,15 @@ public class SecurityConfig {
     }
 
     @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().antMatchers("/images/**", "/js/**", "/css/**", "/webjars/**");
-    }
+    SecurityFilterChain resources(HttpSecurity http) throws Exception {
+        http.requestMatchers((matchers) -> matchers.antMatchers("/images/**", "/js/**", "/css/**", "/webjars/**"))
+                .authorizeHttpRequests((authorize) -> authorize.anyRequest().permitAll())
+                .requestCache().disable()
+                .securityContext().disable()
+                .sessionManagement().disable();
 
+        return http.build();
+    }
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 

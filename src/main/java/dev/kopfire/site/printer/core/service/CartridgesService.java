@@ -2,11 +2,14 @@ package dev.kopfire.site.printer.core.service;
 
 import dev.kopfire.site.printer.core.mapper.CartridgesMapper;
 import dev.kopfire.site.printer.core.mapper.OfficesMapper;
+import dev.kopfire.site.printer.core.mapper.TypesCartridgesMapper;
 import dev.kopfire.site.printer.core.model.CartridgeDTO;
 import dev.kopfire.site.printer.core.model.HousingsDTO;
+import dev.kopfire.site.printer.core.model.TypesCartridgesDTO;
 import dev.kopfire.site.printer.db.entity.Cartridge;
 import dev.kopfire.site.printer.db.entity.Housings;
 import dev.kopfire.site.printer.db.entity.Offices;
+import dev.kopfire.site.printer.db.entity.TypesCartridges;
 import dev.kopfire.site.printer.db.repository.CartridgesRepository;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +24,16 @@ public class CartridgesService {
 
     private final OfficesMapper officesMapper;
 
-    public CartridgesService(CartridgesRepository cartridgesRepository, CartridgesMapper cartridgesMapper, OfficesMapper officesMapper) {
+    private final TypesCartridgesMapper typesCartridgesMapper;
+
+    public CartridgesService(CartridgesRepository cartridgesRepository,
+                             CartridgesMapper cartridgesMapper,
+                             OfficesMapper officesMapper,
+                             TypesCartridgesMapper typesCartridgesMapper) {
         this.cartridgesRepository = cartridgesRepository;
         this.cartridgesMapper = cartridgesMapper;
         this.officesMapper = officesMapper;
+        this.typesCartridgesMapper = typesCartridgesMapper;
     }
 
     public void addCartridge(CartridgeDTO cartridge) {
@@ -56,5 +65,9 @@ public class CartridgesService {
 
     public boolean cartridgeAlreadyExists(String name) {
         return cartridgesRepository.findByQR(name) != null;
+    }
+
+    public List<CartridgeDTO> findByTypeCartridges(TypesCartridgesDTO typesCartridgesDTO) {
+        return cartridgesMapper.mapAsList(cartridgesRepository.findByTypeCartridge(typesCartridgesMapper.map(typesCartridgesDTO, TypesCartridges.class)), CartridgeDTO.class);
     }
 }

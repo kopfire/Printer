@@ -6,7 +6,9 @@ import dev.kopfire.site.printer.core.model.HousingsDTO;
 import dev.kopfire.site.printer.core.model.OfficesDTO;
 import dev.kopfire.site.printer.db.entity.Housings;
 import dev.kopfire.site.printer.db.entity.Offices;
+import dev.kopfire.site.printer.db.entity.TypesCartridges;
 import dev.kopfire.site.printer.db.repository.OfficesRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,10 +42,25 @@ public class OfficesService {
     }
 
     public List<OfficesDTO> findAll() {
-        return officesMapper.mapAsList(officesRepository.findAll(), OfficesDTO.class);
+        return officesMapper.mapAsList(officesRepository.findAll(Sort.by(Sort.Direction.ASC, "housing").and(Sort.by(Sort.Direction.ASC, "name"))), OfficesDTO.class);
     }
 
     public boolean officeAlreadyExists(HousingsDTO housing, String name) {
         return officesRepository.findByHouseAndName(housingsMapper.map(housing, Housings.class), name) != null;
+    }
+
+    public void deleteOffice(Long id) {
+        officesRepository.delete(officesRepository.getReferenceById(id));
+    }
+
+    public void changeOffice(Long id, String name, HousingsDTO housing) {
+
+        Offices offices = officesRepository.getReferenceById(id);
+
+        offices.setName(name);
+
+        offices.setHousing(housingsMapper.map(housing, Housings.class));
+
+        officesRepository.save(offices);
     }
 }
