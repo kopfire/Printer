@@ -21,4 +21,9 @@ public class PrinterDTO {
     private int statusRefill;
     private int statusUsers;
     private String normalTypes;
+
+    public PrinterDTO(String name, List<String> types_cartridges) {
+        this.name = name;
+        this.types_cartridges = types_cartridges;
+    }
 }
