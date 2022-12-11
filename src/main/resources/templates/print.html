@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head th:replace ="fragments/header::head">
+</head>
+<link rel="stylesheet" type="text/css" href="/static/css/cartridges.css" th:href="@{/css/cartridges.css}" />
+<style>
+    @media print{
+        body * {
+            display: none;
+        }
+        #content, #content * {
+            display: block;
+        }
+    }
+</style>
+<body class="d-flex flex-column min-vh-100">
+
+<div th:replace ="fragments/header::head-navbar"></div>
+
+<div class="container-fluid">
+    <h1 class="top-name center-block text-center">Печать</h1>
+    <button   type="submit" class=" btn btn-primary float-left m-3" id="myprint">Печать</button>
+
+</div>
+
+<div id="content">
+    <th:block th:each="image : ${imageData}">
+        <img th:src="${image}" alt="qr" class="to_print">
+    </th:block>
+</div>
+
+<footer th:replace ="fragments/footer::foot-privacy"></footer>
+<div th:replace ="fragments/footer::foot"></div>
+
+<script>
+    const printBtn = document.getElementById('myprint');
+    printBtn.addEventListener('click', function (){
+        print();
+    })
+</script>
+
+</body>
+</html>

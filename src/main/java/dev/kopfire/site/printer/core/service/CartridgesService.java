@@ -11,9 +11,11 @@ import dev.kopfire.site.printer.db.entity.Housings;
 import dev.kopfire.site.printer.db.entity.Offices;
 import dev.kopfire.site.printer.db.entity.TypesCartridges;
 import dev.kopfire.site.printer.db.repository.CartridgesRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CartridgesService {
@@ -52,6 +54,18 @@ public class CartridgesService {
         cartridgesRepository.save(cartridgesOld);
     }
 
+    public void changeCartridgeFull(CartridgeDTO cartridge, Long id) {
+        Cartridge cartridgesOld = cartridgesRepository.findByID(id);
+
+        cartridgesOld.setText_qr(cartridge.getText_qr());
+        cartridgesOld.setType_cartridge(typesCartridgesMapper.map(cartridge.getType_cartridge(), TypesCartridges.class));
+        cartridgesOld.setStatus(cartridge.getStatus());
+        cartridgesOld.setText_status(cartridge.getText_status());
+        cartridgesOld.setOffice(officesMapper.map(cartridge.getOffice(), Offices.class));
+
+        cartridgesRepository.save(cartridgesOld);
+    }
+
     public CartridgeDTO getCartridge(String text_qr) {
         List<Cartridge> cartridgeList = cartridgesRepository.findByQR(text_qr);
         if (cartridgeList.size() == 0)
@@ -60,11 +74,11 @@ public class CartridgesService {
     }
 
     public List<CartridgeDTO> findAll() {
-        return cartridgesMapper.mapAsList(cartridgesRepository.findAll(), CartridgeDTO.class);
+        return cartridgesMapper.mapAsList(cartridgesRepository.findAll(Sort.by(Sort.Direction.ASC, "id")), CartridgeDTO.class);
     }
 
-    public boolean cartridgeAlreadyExists(String name) {
-        return cartridgesRepository.findByQR(name) != null;
+    public void deleteCartridge(Long id) {
+        cartridgesRepository.delete(cartridgesRepository.getReferenceById(id));
     }
 
     public List<CartridgeDTO> findByTypeCartridges(TypesCartridgesDTO typesCartridgesDTO) {

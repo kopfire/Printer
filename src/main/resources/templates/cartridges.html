@@ -3,6 +3,7 @@
 <head th:replace ="fragments/header::head">
 </head>
 <link rel="stylesheet" type="text/css" href="/static/css/cartridges.css" th:href="@{/css/cartridges.css}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <body class="d-flex flex-column min-vh-100">
 
 <div th:replace ="fragments/header::head-navbar"></div>
@@ -10,7 +11,40 @@
 
 <div class="container-fluid">
     <h1 class="top-name center-block text-center">Картриджи</h1>
-    <div class="table-responsive">
+
+    <form method="POST" enctype="multipart/form-data" action="/addCartridges">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <div class="row mt-3">
+            <div class="col"></div>
+            <div class="col"></div>
+            <div class="col align-self-center">
+                <select class="typesCartridges"  aria-label=".form-select-lg example" id="typesCartridges" name="typesCartridges">
+                    <th:block th:each="typesCartridgesData : ${model.typesCartridgesData}">
+                        <option th:value="${typesCartridgesData.getId()}" th:label="${typesCartridgesData.getName()}"></option>
+                    </th:block>
+                </select>
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" id="count" name="count" placeholder="Количество">
+            </div>
+            <div class="col"></div>
+            <div class="col"></div>
+        </div>
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"></div>
+            <div class="col"></div>
+            <div class="col">
+                <button   type="submit" class=" btn btn-primary float-right m-3" id="download_btn">Добавить и <br>распечатать QR-коды</button>
+            </div>
+            <div class="col align-self-center">
+                <p class="text-danger" th:if="${errorMessage}" th:text="${errorMessage}"></p>
+                <p class="text-success" th:if="${successMessage}" th:text="${successMessage}"></p></div>
+            <div class="col"></div>
+        </div>
+    </form>
+
+    <div class="table">
         <table class="table table-bordered ">
             <thead>
                 <tr class = "text-center">
@@ -32,30 +66,191 @@
                     <th>
                         Комментарий
                     </th>
+                    <th>
+
+                    </th>
                 </tr>
             </thead>
             <tbody>
-                <th:block th:each="cartridge : ${cartridgesData}">
-                    <tr class = "text-center">
-                        <td class="align-middle">
-                            <p th:utext="${cartridge.getText_qr()}"></p>
-                        </td>
-                        <td class="align-middle">
-                            <p th:utext="${cartridge.getType_cartridge()?.getName()}"></p>
-                        </td>
-                        <td class="align-middle">
-                            <p th:utext="${cartridge.getStatus()}"></p>
-                        </td>
-                        <td class="align-middle">
-                            <p th:utext="${cartridge.getOffice()?.getHousing()?.getName()}"></p>
-                        </td>
-                        <td class="align-middle">
-                            <p th:utext="${cartridge.getOffice()?.getName()}"></p>
-                        </td>
-                        <td class="align-middle">
-                            <p th:utext="${cartridge.getText_status()}"></p>
-                        </td>
-                    </tr>
+                <th:block th:each="cartridge : ${model.cartridgesData}">
+                    <form method="POST" enctype="multipart/form-data" >
+                        <tr class = "text-center">
+                            <td class="align-middle">
+                                <p th:utext="${cartridge.getText_qr()}"></p>
+                                <div class="align-middle mt-3" th:id="open_change + ${cartridge.getId()} + hidden-edit2" hidden>
+                                    <input type="text" class="form-control" id="name_change" name="name_change" th:value="${cartridge.getText_qr()}" placeholder="Новое название">
+                                </div>
+                            </td>
+                            <td class="align-middle">
+                                <p th:utext="${cartridge.getType_cartridge()?.getName()}"></p>
+                                <div class="align-middle mt-3" th:id="open_change + ${cartridge.getId()} + hidden-edit3" hidden>
+                                    <select class="typesCartridges"  aria-label=".form-select-lg example" id="typesCartridges_change" name="typesCartridges_change">
+                                        <th:block th:each="typesCartridgesData : ${model.typesCartridgesData}">
+                                            <option th:value="${typesCartridgesData.getId()}" th:label="${typesCartridgesData.getName()}"></option>
+                                        </th:block>
+                                    </select>
+                                </div>
+                            </td>
+                            <td class="align-middle">
+                                <p th:utext="${cartridge.getStatus()}"></p>
+                                <div class="align-middle mt-3" th:id="open_change + ${cartridge.getId()} + hidden-edit4" hidden>
+                                    <select class="align-middle"  aria-label=".form-select-lg example" th:id="select_status + ${cartridge.getId()} + hidden-edit8" name="status_change">
+                                        <option value="В отделе">В отделе</option>
+                                        <option value="На заправке">На заправке</option>
+                                        <option value="У пользователей">У пользователей</option>
+                                    </select>
+                                </div>
+                            </td>
+                            <td class="align-middle">
+                                <p th:utext="${cartridge.getOffice()?.getHousing()?.getName()}"></p>
+                                <div class="align-middle mt-3" th:id="twoselect_status + ${cartridge.getId()} + hidden-edit8" hidden>
+                                    <select class="align-middle" th:id="select_housing + ${cartridge.getId()} + hidden-edit" aria-label=".form-select-lg example" name="housings_change" >
+                                        <th:block th:each="housingsData : ${model.housingsData}">
+                                            <option th:value="${housingsData.getId()}" th:label="${housingsData.getName()}"></option>
+                                        </th:block>
+                                    </select>
+                                </div>
+                            </td>
+                            <td class="align-middle">
+                                <p th:utext="${cartridge.getOffice()?.getName()}"></p>
+                                <div th:fragment="list">
+                                    <div class="align-middle mt-3" th:id="twoselect_status + ${cartridge.getId()} + hidden-edit82" hidden>
+                                        <select class="align-middle"  aria-label=".form-select-lg example" id="offices" name="offices">
+                                            <optgroup label="Главный корпус" th:id="twoselect_housing + ${cartridge.getId()} + hidden-edit1" >
+                                                <th:block th:each="officesData : ${model.officesData}"
+                                                          th:if="${officesData.getHousing().getId()} == 1"  >
+                                                    <option th:value="${officesData.getId()}" th:label="${officesData.getName()}"></option>
+                                                </th:block>
+                                            </optgroup>
+                                            <optgroup label="Пристрой" th:id="twoselect_housing + ${cartridge.getId()} + hidden-edit2" hidden>
+                                                <th:block th:each="officesData : ${model.officesData}"
+                                                          th:if="${officesData.getHousing().getId()} == 2"  >
+                                                    <option th:value="${officesData.getId()}" th:label="${officesData.getName()}"></option>
+                                                </th:block>
+                                            </optgroup>
+                                            <optgroup label="Общежитие №1" th:id="twoselect_housing + ${cartridge.getId()} + hidden-edit3" hidden>
+                                                <th:block th:each="officesData : ${model.officesData}"
+                                                          th:if="${officesData.getHousing().getId()} == 3"  >
+                                                    <option th:value="${officesData.getId()}" th:label="${officesData.getName()}"></option>
+                                                </th:block>
+                                            </optgroup>
+                                            <optgroup label="Общежитие №3" th:id="twoselect_housing + ${cartridge.getId()} + hidden-edit4" hidden>
+                                                <th:block th:each="officesData : ${model.officesData}"
+                                                          th:if="${officesData.getHousing().getId()} == 4"  >
+                                                    <option th:value="${officesData.getId()}" th:label="${officesData.getName()}"></option>
+                                                </th:block>
+                                            </optgroup>
+                                            <optgroup label="Учебный корпус №2" th:id="twoselect_housing + ${cartridge.getId()} + hidden-edit5" hidden>
+                                                <th:block th:each="officesData : ${model.officesData}"
+                                                          th:if="${officesData.getHousing().getId()} == 5"  >
+                                                    <option th:value="${officesData.getId()}" th:label="${officesData.getName()}"></option>
+                                                </th:block>
+                                            </optgroup>
+                                            <optgroup label="Учебный корпус №3" th:id="twoselect_housing + ${cartridge.getId()} + hidden-edit6" hidden>
+                                                <th:block th:each="officesData : ${model.officesData}"
+                                                          th:if="${officesData.getHousing().getId()} == 6"  >
+                                                    <option th:value="${officesData.getId()}" th:label="${officesData.getName()}"></option>
+                                                </th:block>
+                                            </optgroup>
+                                            <optgroup label="Учебный корпус №7" th:id="twoselect_housing + ${cartridge.getId()} + hidden-edit7" hidden>
+                                                <th:block th:each="officesData : ${model.officesData}"
+                                                          th:if="${officesData.getHousing().getId()} == 7"  >
+                                                    <option th:value="${officesData.getId()}" th:label="${officesData.getName()}"></option>
+                                                </th:block>
+                                            </optgroup>
+                                            <optgroup label="Учебный корпус №8" th:id="twoselect_housing + ${cartridge.getId()} + hidden-edit8" hidden>
+                                                <th:block th:each="officesData : ${model.officesData}"
+                                                          th:if="${officesData.getHousing().getId()} == 8"  >
+                                                    <option th:value="${officesData.getId()}" th:label="${officesData.getName()}"></option>
+                                                </th:block>
+                                            </optgroup>
+                                            <optgroup label="Учебный корпус №9" th:id="twoselect_housing + ${cartridge.getId()} + hidden-edit9" hidden>
+                                                <th:block th:each="officesData : ${model.officesData}"
+                                                          th:if="${officesData.getHousing().getId()} == 9"  >
+                                                    <option th:value="${officesData.getId()}" th:label="${officesData.getName()}"></option>
+                                                </th:block>
+                                            </optgroup>
+                                            <optgroup label="АЦКК" th:id="twoselect_housing + ${cartridge.getId()} + hidden-edit10" hidden>
+                                                <th:block th:each="officesData : ${model.officesData}"
+                                                          th:if="${officesData.getHousing().getId()} == 10"  >
+                                                    <option th:value="${officesData.getId()}" th:label="${officesData.getName()}"></option>
+                                                </th:block>
+                                            </optgroup>
+                                            <optgroup label="Знаменск УК №1" th:id="twoselect_housing + ${cartridge.getId()} + hidden-edit11" hidden>
+                                                <th:block th:each="officesData : ${model.officesData}"
+                                                          th:if="${officesData.getHousing().getId()} == 11"  >
+                                                    <option th:value="${officesData.getId()}" th:label="${officesData.getName()}"></option>
+                                                </th:block>
+                                            </optgroup>
+                                            <optgroup label="Знаменск УК №2" th:id="twoselect_housing + ${cartridge.getId()} + hidden-edit12" hidden>
+                                                <th:block th:each="officesData : ${model.officesData}"
+                                                          th:if="${officesData.getHousing().getId()} == 12"  >
+                                                    <option th:value="${officesData.getId()}" th:label="${officesData.getName()}"></option>
+                                                </th:block>
+                                            </optgroup>
+                                            <optgroup label="Общежитие №2" th:id="twoselect_housing + ${cartridge.getId()} + hidden-edit13" hidden>
+                                                <th:block th:each="officesData : ${model.officesData}"
+                                                          th:if="${officesData.getHousing().getId()} == 13"  >
+                                                    <option th:value="${officesData.getId()}" th:label="${officesData.getName()}"></option>
+                                                </th:block>
+                                            </optgroup>
+                                            <optgroup label="Общежитие №4" th:id="twoselect_housing + ${cartridge.getId()} + hidden-edit14" hidden>
+                                                <th:block th:each="officesData : ${model.officesData}"
+                                                          th:if="${officesData.getHousing().getId()} == 14"  >
+                                                    <option th:value="${officesData.getId()}" th:label="${officesData.getName()}"></option>
+                                                </th:block>
+                                            </optgroup>
+                                            <optgroup label="Общежитие №5" th:id="twoselect_housing + ${cartridge.getId()} + hidden-edit15" hidden>
+                                                <th:block th:each="officesData : ${model.officesData}"
+                                                          th:if="${officesData.getHousing().getId()} == 15"  >
+                                                    <option th:value="${officesData.getId()}" th:label="${officesData.getName()}"></option>
+                                                </th:block>
+                                            </optgroup>
+                                            <optgroup label="Общежитие №6" th:id="twoselect_housing + ${cartridge.getId()} + hidden-edit16" hidden>
+                                                <th:block th:each="officesData : ${model.officesData}"
+                                                          th:if="${officesData.getHousing().getId()} == 16"  >
+                                                    <option th:value="${officesData.getId()}" th:label="${officesData.getName()}"></option>
+                                                </th:block>
+                                            </optgroup>
+                                            <optgroup label="Общежитие №7" th:id="twoselect_housing + ${cartridge.getId()} + hidden-edit17" hidden>
+                                                <th:block th:each="officesData : ${model.officesData}"
+                                                          th:if="${officesData.getHousing().getId()} == 17"  >
+                                                    <option th:value="${officesData.getId()}" th:label="${officesData.getName()}"></option>
+                                                </th:block>
+                                            </optgroup>
+
+                                        </select>
+                                    </div>
+                              </div>
+                            </td>
+                            <td class="align-middle">
+                                <div class="col my-auto">
+                                    <p th:utext="${cartridge.getText_status()}"></p>
+                                    <div class="align-middle mt-3" th:id="open_change + ${cartridge.getId()} + hidden-edit5" hidden>
+                                        <input type="text" class="form-control" id="text_change" name="text_change" placeholder="Комментарий">
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="align-middle">
+                                <div class="row  justify-content-center">
+                                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                                    <button   type="button" class=" btn btn-primary float-right mr-1"  th:id="open_change + ${cartridge.getId()}">
+                                        <i class="fa fa-edit"></i>
+                                    </button>
+                                    <input type="text" class="form-control" id="id_del" name="id_del" th:value="${cartridge.getId()}" hidden>
+                                    <button   type="submit" class=" btn btn-primary float-right mr-1" id="delete_btn" formaction="/deleteCartridge">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </div>
+                                <div class="row justify-content-center mt-2" th:id="open_change + ${cartridge.getId()} + hidden-edit" hidden>
+                                    <div class="col-sm-0">
+                                        <input type="text" class="form-control" id="id_change" name="id_change" th:value="${cartridge.getId()}" hidden>
+                                        <button type="submit" class=" btn btn-primary float-right mr-2" id="change_btn" formaction="/changeCartridges">Изменить</button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </form>
                 </th:block>
             </tbody>
         </table>
@@ -64,6 +259,8 @@
 
 <footer th:replace ="fragments/footer::foot-privacy"></footer>
 <div th:replace ="fragments/footer::foot"></div>
+<div th:replace ="fragments/script::script_hidden"></div>
+<div th:replace ="fragments/script::script_cartridges"></div>
 
 </body>
 </html>

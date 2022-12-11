@@ -98,4 +98,12 @@ public class PrintersController {
 
         return "redirect:/printers";
     }
+
+    @PostMapping("/deletePrinter")
+    public String deletePrinter(@RequestParam("id_del") Long id_del) {
+
+        printersService.deletePrinter(id_del);
+
+        return "redirect:/printers";
+    }
 }

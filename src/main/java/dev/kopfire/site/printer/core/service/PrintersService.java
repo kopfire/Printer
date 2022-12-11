@@ -48,12 +48,4 @@ public class PrintersService {
     public void deletePrinter(Long id) {
         printersRepository.delete(printersRepository.getReferenceById(id));
     }
-
-    public void changePrinter(Long id, String name) {
-
-        Printer printer = printersRepository.getReferenceById(id);
-        printer.setName(name);
-
-        printersRepository.save(printer);
-    }
 }

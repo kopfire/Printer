@@ -137,10 +137,6 @@ public class QRReaderController {
 
             if (!Objects.equals(officeDTO.getHousing().getId(), housings)) {
                 redirectAttributes.addFlashAttribute("errorMessage", "Некорректный кабинет.");
-                /*redirectAttributes.addFlashAttribute("status_change", status);
-                redirectAttributes.addFlashAttribute("name", name);
-                redirectAttributes.addFlashAttribute("housingsData", housingsService.findAll());
-                redirectAttributes.addFlashAttribute("officesData", officesService.findAll());*/
                 return "redirect:/qr";
             }
 

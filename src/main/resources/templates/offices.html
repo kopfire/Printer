@@ -91,18 +91,17 @@
                                     </div>
                                 </div>
 
-                                    <div class="row mt-2" th:id="open_change + ${offices.getId()} + hidden-edit" hidden>
-                                        <div class="col"></div>
-                                        <div class="col">
-                                            <input type="text" class="form-control" id="name_change" name="name_change" placeholder="Новое название">
-                                        </div>
-                                        <div class="col"></div>
-                                        <div class="col-sm-0">
-                                            <input type="text" class="form-control" id="id_change" name="id_change" th:value="${offices.getId()}" hidden>
-                                            <button type="submit" class=" btn btn-primary float-right mr-2" id="change_btn" formaction="/changeOffice">Изменить</button>
-                                        </div>
+                                <div class="row mt-2" th:id="open_change + ${offices.getId()} + hidden-edit" hidden>
+                                    <div class="col"></div>
+                                    <div class="col">
+                                        <input type="text" class="form-control" id="name_change" name="name_change" placeholder="Новое название">
                                     </div>
-
+                                    <div class="col"></div>
+                                    <div class="col-sm-0">
+                                        <input type="text" class="form-control" id="id_change" name="id_change" th:value="${offices.getId()}" hidden>
+                                        <button type="submit" class=" btn btn-primary float-right mr-2" id="change_btn" formaction="/changeOffice">Изменить</button>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     </form>
@@ -114,14 +113,7 @@
 
 <footer th:replace ="fragments/footer::foot-privacy"></footer>
 <div th:replace ="fragments/footer::foot"></div>
-
-<script>
-    $('button[id^="open_change"]').click(function () {
-        var input = '#' + $(this).attr('id') + 'hidden-edit';
-        $(input).removeAttr('hidden');
-        $(input + '2').removeAttr('hidden');
-    });
-</script>
+<div th:replace ="fragments/script::script_hidden"></div>
 
 </body>
 </html>

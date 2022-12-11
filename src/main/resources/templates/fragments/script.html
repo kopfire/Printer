@@ -127,3 +127,114 @@
     });
   </script>
 </div>
+
+<div th:fragment="script_cartridges">
+  <script>
+    $('select[id^="select_housing"]').on('change', function () {
+      var input = '#two' + $(this).attr('id');
+      hiddenAll(input)
+      switch (this.value){
+        case "1":
+          $(input + '1').removeAttr('hidden');
+          break;
+        case "2":
+          $(input + '2').removeAttr('hidden');
+          break;
+        case "3":
+          $(input + '3').removeAttr('hidden');
+          break;
+        case "4":
+          $(input + '4').removeAttr('hidden');
+          break;
+        case "5":
+          $(input + '5').removeAttr('hidden');
+          break;
+        case "6":
+          $(input + '6').removeAttr('hidden');
+          break;
+        case "7":
+          $(input + '7').removeAttr('hidden');
+          break;
+        case "8":
+          $(input + '8').removeAttr('hidden');
+          break;
+        case "9":
+          $(input + '9').removeAttr('hidden');
+          break;
+        case "10":
+          $(input + '10').removeAttr('hidden');
+          break;
+        case "11":
+          $(input + '11').removeAttr('hidden');
+          break;
+        case "12":
+          $(input + '12').removeAttr('hidden');
+          break;
+        case "13":
+          $(input + '13').removeAttr('hidden');
+          break;
+        case "14":
+          $(input + '14').removeAttr('hidden');
+          break;
+        case "15":
+          $(input + '15').removeAttr('hidden');
+          break;
+        case "16":
+          $(input + '16').removeAttr('hidden');
+          break;
+        case "17":
+          $(input + '17').removeAttr('hidden');
+          break;
+
+      }
+    });
+
+    function hiddenAll(input){
+      $(input + '1').attr("hidden",true);
+      $(input + '2').attr("hidden",true);
+      $(input + '3').attr("hidden",true);
+      $(input + '4').attr("hidden",true);
+      $(input + '5').attr("hidden",true);
+      $(input + '6').attr("hidden",true);
+      $(input + '7').attr("hidden",true);
+      $(input + '8').attr("hidden",true);
+      $(input + '9').attr("hidden",true);
+      $(input + '10').attr("hidden",true);
+      $(input + '11').attr("hidden",true);
+      $(input + '12').attr("hidden",true);
+      $(input + '13').attr("hidden",true);
+      $(input + '14').attr("hidden",true);
+      $(input + '15').attr("hidden",true);
+      $(input + '16').attr("hidden",true);
+      $(input + '17').attr("hidden",true);
+    }
+  </script>
+
+  <script>
+
+    $('select[id^="select_status"]').on('change', function () {
+      var input = '#two' + $(this).attr('id');
+      if (this.value == 'У пользователей'){
+        $(input).removeAttr('hidden');
+        $(input + '2').removeAttr('hidden');
+      }
+      else{
+        $(input).attr("hidden",true);
+        $(input + '2').attr("hidden",true);
+      }
+    });
+  </script>
+</div>
+
+<div th:fragment="script_hidden">
+  <script>
+    $('button[id^="open_change"]').click(function () {
+      var input = '#' + $(this).attr('id') + 'hidden-edit';
+      $(input).removeAttr('hidden');
+      $(input + '2').removeAttr('hidden');
+      $(input + '3').removeAttr('hidden');
+      $(input + '4').removeAttr('hidden');
+      $(input + '5').removeAttr('hidden');
+    });
+  </script>
+</div>

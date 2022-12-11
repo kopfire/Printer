@@ -16,7 +16,7 @@ public class Cartridge {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
 
     @ManyToOne()
@@ -25,7 +25,6 @@ public class Cartridge {
 
     @Column
     private String text_qr;
-
 
     @ManyToOne()
     @JoinColumn(name = "office", referencedColumnName = "id")
