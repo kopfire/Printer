@@ -13,7 +13,7 @@ public class TypesCartridgesDTO {
 
     private String name;
 
-    public TypesCartridgesDTO(String name){
+    public TypesCartridgesDTO(String name) {
         this.name = name;
     }
 }

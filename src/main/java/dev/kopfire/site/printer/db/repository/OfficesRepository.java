@@ -1,6 +1,5 @@
 package dev.kopfire.site.printer.db.repository;
 
-import dev.kopfire.site.printer.core.model.HousingsDTO;
 import dev.kopfire.site.printer.db.entity.Housings;
 import dev.kopfire.site.printer.db.entity.Offices;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -50,7 +52,7 @@ public class QRCodeServiceImpl implements QRCodeService {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             MatrixToImageWriter.writeToStream(matrix, "png", outputStream);
 
-            String base64Image = "data:image/png;base64," +  Base64.getEncoder().encodeToString(outputStream.toByteArray());
+            String base64Image = "data:image/png;base64," + Base64.getEncoder().encodeToString(outputStream.toByteArray());
 
             list.add(base64Image);
         }

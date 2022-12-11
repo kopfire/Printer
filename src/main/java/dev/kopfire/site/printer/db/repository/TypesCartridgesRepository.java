@@ -11,6 +11,4 @@ public interface TypesCartridgesRepository extends JpaRepository<TypesCartridges
 
     @Query(value = "select u from TypesCartridges u where u.name = :name")
     TypesCartridges findByName(@Param("name") String name);
-
-
 }

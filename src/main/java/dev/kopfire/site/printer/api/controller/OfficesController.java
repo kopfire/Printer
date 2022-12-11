@@ -4,7 +4,6 @@ import dev.kopfire.site.printer.core.model.HousingsDTO;
 import dev.kopfire.site.printer.core.model.OfficesDTO;
 import dev.kopfire.site.printer.core.service.HousingsService;
 import dev.kopfire.site.printer.core.service.OfficesService;
-import dev.kopfire.site.printer.db.entity.TypesCartridges;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,16 +39,14 @@ public class OfficesController {
     @PostMapping("/addOffice")
     public String addOffice(@RequestParam("name") String name, @RequestParam("housings") Long housings, RedirectAttributes redirectAttributes) {
 
-
-
-        if (!name.matches("[a-zA-Z0-9-]+")){
+        if (!name.matches("[a-zA-Z0-9-]+")) {
             redirectAttributes.addFlashAttribute("errorMessage", "Название содержит некорректные символы (Кириллица запрещена)");
             return "redirect:/offices";
         }
 
         HousingsDTO housingsDTO = housingsService.getHousingDTO(housings);
 
-        if(officesService.officeAlreadyExists(housingsDTO, name)){
+        if (officesService.officeAlreadyExists(housingsDTO, name)) {
             redirectAttributes.addFlashAttribute("errorMessage", "Этот кабинет уже добавлен");
             return "redirect:/offices";
         }
@@ -74,14 +71,14 @@ public class OfficesController {
     @PostMapping("/changeOffice")
     public String changeOffice(@RequestParam("id_change") Long id_change, @RequestParam("name_change") String name_change, @RequestParam("housings_change") Long housings_change, RedirectAttributes redirectAttributes) {
 
-        if (!name_change.matches("[a-zA-Z0-9-]+")){
+        if (!name_change.matches("[a-zA-Z0-9-]+")) {
             redirectAttributes.addFlashAttribute("errorMessage", "Название содержит некорректные символы (Кириллица запрещена)");
             return "redirect:/offices";
         }
 
         HousingsDTO housingsDTO = housingsService.getHousingDTO(housings_change);
 
-        if(officesService.officeAlreadyExists(housingsDTO, name_change)){
+        if (officesService.officeAlreadyExists(housingsDTO, name_change)) {
             redirectAttributes.addFlashAttribute("errorMessage", "Этот кабинет уже добавлен");
             return "redirect:/offices";
         }

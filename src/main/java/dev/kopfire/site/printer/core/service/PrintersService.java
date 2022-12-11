@@ -1,13 +1,9 @@
 package dev.kopfire.site.printer.core.service;
 
 import dev.kopfire.site.printer.core.mapper.PrintersMapper;
-import dev.kopfire.site.printer.core.mapper.TypesCartridgesMapper;
 import dev.kopfire.site.printer.core.model.PrinterDTO;
-import dev.kopfire.site.printer.core.model.TypesCartridgesDTO;
 import dev.kopfire.site.printer.db.entity.Printer;
-import dev.kopfire.site.printer.db.entity.TypesCartridges;
 import dev.kopfire.site.printer.db.repository.PrintersRepository;
-import dev.kopfire.site.printer.db.repository.TypesCartridgesRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

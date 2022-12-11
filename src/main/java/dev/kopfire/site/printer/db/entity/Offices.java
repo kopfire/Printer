@@ -24,10 +24,10 @@ public class Offices {
     private String name;
 
     @ManyToOne()
-    @JoinColumn(name="housing", referencedColumnName = "id")
+    @JoinColumn(name = "housing", referencedColumnName = "id")
     private Housings housing;
 
-    @OneToMany(targetEntity=Cartridge.class, mappedBy="id",cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(targetEntity = Cartridge.class, mappedBy = "id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Cartridge> cartridgeList = new ArrayList<>();
 
 }

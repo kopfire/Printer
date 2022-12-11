@@ -1,6 +1,8 @@
 package dev.kopfire.site.printer.api.controller;
 
-import dev.kopfire.site.printer.core.model.*;
+import dev.kopfire.site.printer.core.model.CartridgeDTO;
+import dev.kopfire.site.printer.core.model.PrinterDTO;
+import dev.kopfire.site.printer.core.model.TypesCartridgesDTO;
 import dev.kopfire.site.printer.core.service.CartridgesService;
 import dev.kopfire.site.printer.core.service.PrintersService;
 import dev.kopfire.site.printer.core.service.TypesCartridgesService;
@@ -77,15 +79,14 @@ public class PrintersController {
     public String addPrinter(@RequestParam("name") String name, @RequestParam("typeCartridge") String typeCartridge, RedirectAttributes redirectAttributes) {
 
 
-
-        if (!name.matches("[a-zA-Z0-9- ]+")){
+        if (!name.matches("[a-zA-Z0-9- ]+")) {
             redirectAttributes.addFlashAttribute("errorMessage", "Название содержит некорректные символы (Кириллица запрещена)");
             return "redirect:/printers";
         }
 
         List<String> typesCartridges = List.of(typeCartridge.split(","));
 
-        if(printersService.printerAlreadyExists(name)){
+        if (printersService.printerAlreadyExists(name)) {
             redirectAttributes.addFlashAttribute("errorMessage", "Этот принтер уже добавлен");
             return "redirect:/printers";
         }

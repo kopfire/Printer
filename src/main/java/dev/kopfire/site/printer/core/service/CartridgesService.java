@@ -4,10 +4,8 @@ import dev.kopfire.site.printer.core.mapper.CartridgesMapper;
 import dev.kopfire.site.printer.core.mapper.OfficesMapper;
 import dev.kopfire.site.printer.core.mapper.TypesCartridgesMapper;
 import dev.kopfire.site.printer.core.model.CartridgeDTO;
-import dev.kopfire.site.printer.core.model.HousingsDTO;
 import dev.kopfire.site.printer.core.model.TypesCartridgesDTO;
 import dev.kopfire.site.printer.db.entity.Cartridge;
-import dev.kopfire.site.printer.db.entity.Housings;
 import dev.kopfire.site.printer.db.entity.Offices;
 import dev.kopfire.site.printer.db.entity.TypesCartridges;
 import dev.kopfire.site.printer.db.repository.CartridgesRepository;
@@ -15,7 +13,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CartridgesService {
