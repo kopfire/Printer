@@ -64,13 +64,20 @@ public class CartridgesController {
             return "redirect:/cartridges";
         }
 
+        int countInt = Integer.parseInt(count);
+
+        if (countInt>100) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Одумайся, столько картриджей не бывает");
+            return "redirect:/cartridges";
+        }
+
         List<CartridgeDTO> listCartridgeDTO = cartridgesService.findAll();
 
         String lastQr = listCartridgeDTO.get(listCartridgeDTO.size() - 1).getText_qr();
 
         int first = Integer.parseInt(lastQr.replaceAll("\\D+", "")) + 1;
 
-        int countInt = Integer.parseInt(count);
+
 
         TypesCartridgesDTO typesCartridgesDTO = typesCartridgesService.getById(typesCartridges);
 
