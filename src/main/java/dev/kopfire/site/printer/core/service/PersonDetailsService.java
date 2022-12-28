@@ -39,6 +39,19 @@ public class PersonDetailsService implements UserDetailsService {
         return personNew.isEmpty();
     }
 
+    public void changePerson(int id, String role) {
+
+        Person person = personRepository.findById(id).get();
+
+        person.setRole(role);
+
+        personRepository.save(person);
+    }
+
+    public void deletePerson(Integer id) {
+        personRepository.delete(personRepository.getReferenceById(id));
+    }
+
     public List<PersonDTO> findAll() {
         return personMapper.mapAsList(personRepository.findAll(), PersonDTO.class);
     }
