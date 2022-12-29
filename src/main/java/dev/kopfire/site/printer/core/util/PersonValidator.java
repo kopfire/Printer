@@ -29,6 +29,9 @@ public class PersonValidator implements Validator {
         if (!person.getPassword().equals(person.getPasswordTwo()))
             errors.rejectValue("password", "", "Пароли не совпадают");
 
+        if (!person.getCode().equals(Constants.code_reg))
+            errors.rejectValue("code", "", "Код регистрации неверный");
+
         if (!personDetailsService.checkUserByUsername(person.getUsername()))
             errors.rejectValue("username", "", "Человек с таким именем пользователя существует");
     }

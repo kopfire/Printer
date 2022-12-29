@@ -18,7 +18,7 @@
     <p class="text-success" th:if="${successMessage}" th:text="${successMessage}"></p>
 
     <form method="POST" enctype="multipart/form-data" action="/changeCartridge">
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <input  type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
         <div class="table-responsive"  th:if="${name}">
             <table class="table table-bordered ">
                 <thead>
@@ -173,7 +173,7 @@
 
  <div th:replace ="fragments/footer::foot"></div>
 
- <div th:replace ="fragments/script::script"></div>
+ <div th:replace ="fragments/script::script_qr"></div>
 
  </body>
  </html>

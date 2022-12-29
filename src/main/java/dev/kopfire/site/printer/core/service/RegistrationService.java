@@ -2,6 +2,7 @@ package dev.kopfire.site.printer.core.service;
 
 import dev.kopfire.site.printer.core.mapper.PersonMapper;
 import dev.kopfire.site.printer.core.model.PersonDTO;
+import dev.kopfire.site.printer.core.util.Constants;
 import dev.kopfire.site.printer.db.entity.Person;
 import dev.kopfire.site.printer.db.repository.PersonRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,6 +12,8 @@ import javax.transaction.Transactional;
 
 @Service
 public class RegistrationService {
+
+    public String code_reg = "test";
 
     private final PersonMapper personMapper;
 

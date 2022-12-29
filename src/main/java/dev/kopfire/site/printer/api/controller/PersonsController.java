@@ -1,6 +1,8 @@
 package dev.kopfire.site.printer.api.controller;
 
 import dev.kopfire.site.printer.core.service.PersonDetailsService;
+import dev.kopfire.site.printer.core.service.RegistrationService;
+import dev.kopfire.site.printer.core.util.Constants;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,6 +38,14 @@ public class PersonsController {
     public String changePerson(@RequestParam("id_change") int id_change, @RequestParam("role_change") String role_change, RedirectAttributes redirectAttributes) {
 
         personService.changePerson(id_change, role_change);
+
+        return "redirect:/persons";
+    }
+
+    @PostMapping("/setNewCodeRegistration")
+    public String setNewCodeRegistration(@RequestParam("name") String code) {
+
+        Constants.code_reg = code;
 
         return "redirect:/persons";
     }
