@@ -1,4 +1,4 @@
-package dev.kopfire.site.printer.core.mapper.config;
+package dev.kopfire.site.printer.core.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

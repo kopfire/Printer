@@ -1,12 +1,12 @@
 package dev.kopfire.site.printer.core.service;
 
-import dev.kopfire.site.printer.core.mapper.HousingsMapper;
-import dev.kopfire.site.printer.core.mapper.OfficesMapper;
 import dev.kopfire.site.printer.core.model.HousingsDTO;
 import dev.kopfire.site.printer.core.model.OfficesDTO;
 import dev.kopfire.site.printer.db.entity.Housings;
 import dev.kopfire.site.printer.db.entity.Offices;
 import dev.kopfire.site.printer.db.repository.OfficesRepository;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,35 +17,29 @@ import java.util.List;
 @Transactional
 public class OfficesService {
 
+    private ModelMapper modelMapper = new ModelMapper();
+
     private final OfficesRepository officesRepository;
 
-    private final OfficesMapper officesMapper;
-
-    private final HousingsMapper housingsMapper;
-
-    public OfficesService(OfficesRepository officesRepository,
-                          OfficesMapper officesMapper,
-                          HousingsMapper housingsMapper) {
+    public OfficesService(OfficesRepository officesRepository) {
         this.officesRepository = officesRepository;
-        this.officesMapper = officesMapper;
-        this.housingsMapper = housingsMapper;
     }
 
     public OfficesDTO getOffice(Long offices) {
-        return officesMapper.map(officesRepository.getReferenceById(offices), OfficesDTO.class);
+        return modelMapper.map(officesRepository.getReferenceById(offices), OfficesDTO.class);
     }
 
     public void addOffice(OfficesDTO officesDTO) {
-        Offices officesNew = officesMapper.map(officesDTO, Offices.class);
+        Offices officesNew = modelMapper.map(officesDTO, Offices.class);
         officesRepository.save(officesNew);
     }
 
     public List<OfficesDTO> findAll() {
-        return officesMapper.mapAsList(officesRepository.findAll(Sort.by(Sort.Direction.ASC, "housing").and(Sort.by(Sort.Direction.ASC, "name"))), OfficesDTO.class);
+        return modelMapper.map(officesRepository.findAll(Sort.by(Sort.Direction.ASC, "housing").and(Sort.by(Sort.Direction.ASC, "name"))), new TypeToken<List<OfficesDTO>>() {}.getType());
     }
 
     public boolean officeAlreadyExists(HousingsDTO housing, String name) {
-        return officesRepository.findByHouseAndName(housingsMapper.map(housing, Housings.class), name) != null;
+        return officesRepository.findByHouseAndName(modelMapper.map(housing, Housings.class), name) != null;
     }
 
     public void deleteOffice(Long id) {
@@ -58,7 +52,7 @@ public class OfficesService {
 
         offices.setName(name);
 
-        offices.setHousing(housingsMapper.map(housing, Housings.class));
+        offices.setHousing(modelMapper.map(housing, Housings.class));
 
         officesRepository.save(offices);
     }

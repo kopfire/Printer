@@ -1,5 +1,4 @@
-FROM osangenis/openjdk-18-go-1.16-alpine
-
-COPY out/artifacts/printer_jar/printer.jar /printer.jar
-
-CMD ["java", "-jar", "/printer.jar"]
+FROM openjdk:17.0.2-jdk-slim-buster
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]

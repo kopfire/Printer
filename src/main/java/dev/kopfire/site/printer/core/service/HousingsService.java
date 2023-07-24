@@ -1,8 +1,9 @@
 package dev.kopfire.site.printer.core.service;
 
-import dev.kopfire.site.printer.core.mapper.HousingsMapper;
 import dev.kopfire.site.printer.core.model.HousingsDTO;
 import dev.kopfire.site.printer.db.repository.HousingsRepository;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,22 +11,20 @@ import java.util.List;
 @Service
 public class HousingsService {
 
+    private ModelMapper modelMapper = new ModelMapper();
+
     private final HousingsRepository housingsRepository;
 
-    private final HousingsMapper housingsMapper;
-
-    public HousingsService(HousingsRepository housingsRepository,
-                           HousingsMapper housingsMapper) {
+    public HousingsService(HousingsRepository housingsRepository) {
         this.housingsRepository = housingsRepository;
-        this.housingsMapper = housingsMapper;
     }
 
     public HousingsDTO getHousingDTO(Long id) {
 
-        return housingsMapper.map(housingsRepository.findByID(id), HousingsDTO.class);
+        return modelMapper.map(housingsRepository.findByID(id), HousingsDTO.class);
     }
 
     public List<HousingsDTO> findAll() {
-        return housingsMapper.mapAsList(housingsRepository.findAll(), HousingsDTO.class);
+        return modelMapper.map(housingsRepository.findAll(), new TypeToken<List<HousingsDTO>>() {}.getType());
     }
 }

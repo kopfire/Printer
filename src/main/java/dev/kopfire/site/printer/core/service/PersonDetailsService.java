@@ -1,9 +1,10 @@
 package dev.kopfire.site.printer.core.service;
 
-import dev.kopfire.site.printer.core.mapper.PersonMapper;
 import dev.kopfire.site.printer.core.model.PersonDTO;
 import dev.kopfire.site.printer.db.entity.Person;
 import dev.kopfire.site.printer.db.repository.PersonRepository;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,13 +16,12 @@ import java.util.Optional;
 @Service
 public class PersonDetailsService implements UserDetailsService {
 
+    private ModelMapper modelMapper = new ModelMapper();
+
     private final PersonRepository personRepository;
 
-    private final PersonMapper personMapper;
-
-    public PersonDetailsService(PersonRepository personRepository, PersonMapper personMapper) {
+    public PersonDetailsService(PersonRepository personRepository) {
         this.personRepository = personRepository;
-        this.personMapper = personMapper;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class PersonDetailsService implements UserDetailsService {
         if (personNew.isEmpty())
             throw new UsernameNotFoundException("Пользователь не найден");
 
-        return personMapper.map(personNew.get(), PersonDTO.class);
+        return modelMapper.map(personNew.get(), PersonDTO.class);
     }
 
     public boolean checkUserByUsername(String username) {
@@ -53,6 +53,6 @@ public class PersonDetailsService implements UserDetailsService {
     }
 
     public List<PersonDTO> findAll() {
-        return personMapper.mapAsList(personRepository.findAll(), PersonDTO.class);
+        return modelMapper.map(personRepository.findAll(), new TypeToken<List<PersonDTO>>() {}.getType());
     }
 }

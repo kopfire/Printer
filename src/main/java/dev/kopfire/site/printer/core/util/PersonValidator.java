@@ -3,12 +3,15 @@ package dev.kopfire.site.printer.core.util;
 import dev.kopfire.site.printer.core.model.PersonDTO;
 import dev.kopfire.site.printer.core.service.PersonDetailsService;
 import dev.kopfire.site.printer.db.entity.Person;
+import org.springframework.context.annotation.Primary;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 @Component
+@Primary
 public class PersonValidator implements Validator {
 
     private final PersonDetailsService personDetailsService;
